@@ -33,7 +33,6 @@
           height: 10px;
           border-radius: 3px;
           flex-shrink: 0;
-
           &.blue {
             background: $blue;
           }
@@ -63,7 +62,6 @@
         width: 16px;
         height: 16px;
         border-radius: 4px;
-
         &.blue {
           background: $blue;
         }
@@ -84,7 +82,6 @@
       font-weight: 700;
       font-size: 0.85rem;
       transition: background 0.2s;
-
       &:hover {
         background: rgba(255, 255, 255, 0.14);
       }
@@ -100,7 +97,6 @@
   .board {
     display: grid;
     gap: 6px;
-
     &.size-16 {
       grid-template-columns: repeat(4, 1fr);
     }
@@ -145,7 +141,6 @@
 
   &.matched {
     cursor: default;
-
     .card-front {
       opacity: 0.7;
     }
@@ -159,43 +154,97 @@
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     @include flex-center;
+    overflow: hidden;
   }
 
+  // ---- Rückseite ----
   .card-back {
-    // theme colors set via JS
-    background: var(--card-color, #{$theme-code});
-
     i {
       font-size: 1.4rem;
-      color: rgba(255, 255, 255, 0.3);
+      color: rgba(255, 255, 255, 0.35);
     }
 
-    &.size-16 i {
-      font-size: 1.6rem;
+    // Logo-Bild auf der Rückseite
+    .card-back-logo {
+      width: 55%;
+      height: 55%;
+      object-fit: contain;
+      filter: brightness(0) invert(1); // weiß einfärben (passt auf alle farbigen BGs)
+      opacity: 0.55;
+      pointer-events: none;
     }
-    &.size-36 i {
-      font-size: 1rem;
+
+    &.size-16 {
+      i {
+        font-size: 1.6rem;
+      }
+      .card-back-logo {
+        width: 60%;
+        height: 60%;
+      }
+    }
+    &.size-36 {
+      i {
+        font-size: 1rem;
+      }
+      .card-back-logo {
+        width: 48%;
+        height: 48%;
+      }
     }
   }
 
+  // ---- Vorderseite ----
   .card-front {
-    background: var(--card-color, #{$theme-code});
     transform: rotateY(180deg);
 
+    // Bild auf der Vorderseite
+    .card-front-img {
+      width: 72%;
+      height: 72%;
+      object-fit: contain;
+      pointer-events: none;
+      border-radius: 4px;
+    }
+
+    // Emoji-Fallback
     .card-symbol {
       font-size: 2rem;
       line-height: 1;
     }
 
-    &.size-16 .card-symbol {
-      font-size: 2.4rem;
+    &.size-16 {
+      .card-front-img {
+        width: 76%;
+        height: 76%;
+      }
+      .card-symbol {
+        font-size: 2.4rem;
+      }
     }
-    &.size-36 .card-symbol {
-      font-size: 1.6rem;
+    &.size-36 {
+      .card-front-img {
+        width: 66%;
+        height: 66%;
+      }
+      .card-symbol {
+        font-size: 1.6rem;
+      }
     }
   }
 
   &:hover:not(.flipped):not(.matched) .card-inner {
     transform: scale(1.04);
+  }
+}
+
+// ===== Settings Preview =====
+.preview-card {
+  .preview-logo {
+    width: 55%;
+    height: 55%;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.5;
   }
 }

@@ -12,7 +12,8 @@ export interface GameSettings {
 export interface CardData {
   id: number;
   pairId: number;
-  symbol: string;
+  symbol: string; // Emoji fallback
+  image?: string; // Pfad zum Bild, z.B. "/images/code/react.png"
   isFlipped: boolean;
   isMatched: boolean;
 }
@@ -28,7 +29,9 @@ export interface GameState {
 
 export interface ThemeConfig {
   color: string;
-  backIcon: string;
-  symbols: string[];
+  backIcon: string; // Bootstrap Icon Fallback
+  backLogo?: string; // Pfad zum Logo auf der Kartenrückseite
+  symbols: string[]; // Emoji Fallbacks
+  images?: string[]; // Pfade zu Kartenbildern (Vorderseite)
   name: string;
 }

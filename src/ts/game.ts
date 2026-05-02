@@ -1,19 +1,29 @@
-import type { CardData, GameSettings, BoardSize } from "./types";
+import type { CardData, GameSettings } from "./types";
 import { THEMES } from "./themes";
 
 export function createCards(settings: GameSettings): CardData[] {
   const theme = THEMES[settings.theme];
   const pairCount = settings.boardSize / 2;
   const symbols = theme.symbols.slice(0, pairCount);
+  const images = theme.images?.slice(0, pairCount);
 
   const cards: CardData[] = [];
   symbols.forEach((symbol, pairId) => {
+    const image = images?.[pairId];
     cards.push(
-      { id: pairId * 2, pairId, symbol, isFlipped: false, isMatched: false },
+      {
+        id: pairId * 2,
+        pairId,
+        symbol,
+        image,
+        isFlipped: false,
+        isMatched: false,
+      },
       {
         id: pairId * 2 + 1,
         pairId,
         symbol,
+        image,
         isFlipped: false,
         isMatched: false,
       },
@@ -30,9 +40,4 @@ function shuffle<T>(arr: T[]): T[] {
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
-}
-
-export function getBoardCols(size: BoardSize): number {
-  if (size === 16) return 4;
-  return 6;
 }

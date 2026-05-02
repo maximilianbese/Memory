@@ -116,7 +116,12 @@ function renderThemePreview(themeKey: string): string {
         .map(
           () => `
         <div class="preview-card" style="background:${theme.color}">
-          <i class="bi ${theme.backIcon}" style="color:rgba(255,255,255,0.3);font-size:0.7rem"></i>
+          ${
+            theme.backLogo
+              ? `<img src="${theme.backLogo}" class="preview-logo" alt="logo" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">`
+              : ""
+          }
+          <i class="bi ${theme.backIcon}" style="color:rgba(255,255,255,0.35);font-size:0.7rem;${theme.backLogo ? "display:none" : ""}"></i>
         </div>
       `,
         )
@@ -130,8 +135,58 @@ export function updateThemePreview(themeKey: string): void {
   if (preview) preview.innerHTML = renderThemePreview(themeKey);
 }
 
+/** Rendert die Kartenrückseite: Logo-Bild wenn vorhanden, sonst Icon */
+function renderCardBack(sizeClass: string, themeKey: string): string {
+  const theme = THEMES[themeKey as keyof typeof THEMES];
+  if (theme.backLogo) {
+    return `
+      <div class="card-back ${sizeClass}" style="background:${theme.color}">
+        <img
+          src="${theme.backLogo}"
+          class="card-back-logo"
+          alt="logo"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+        />
+        <i class="bi ${theme.backIcon}" style="display:none"></i>
+      </div>
+    `;
+  }
+  return `
+    <div class="card-back ${sizeClass}" style="background:${theme.color}">
+      <i class="bi ${theme.backIcon}"></i>
+    </div>
+  `;
+}
+
+/** Rendert die Kartenvorderseite: Bild wenn vorhanden, sonst Emoji */
+function renderCardFront(
+  sizeClass: string,
+  themeKey: string,
+  symbol: string,
+  image?: string,
+): string {
+  const theme = THEMES[themeKey as keyof typeof THEMES];
+  if (image) {
+    return `
+      <div class="card-front ${sizeClass}" style="background:${theme.color}">
+        <img
+          src="${image}"
+          class="card-front-img"
+          alt="${symbol}"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='block'"
+        />
+        <span class="card-symbol" style="display:none">${symbol}</span>
+      </div>
+    `;
+  }
+  return `
+    <div class="card-front ${sizeClass}" style="background:${theme.color}">
+      <span class="card-symbol">${symbol}</span>
+    </div>
+  `;
+}
+
 export function renderGameScreen(state: GameState): string {
-  const theme = THEMES[state.settings.theme];
   const sizeClass = `size-${state.settings.boardSize}`;
 
   return `
@@ -162,15 +217,10 @@ export function renderGameScreen(state: GameState): string {
             .map(
               (card) => `
             <div class="memory-card ${sizeClass} ${card.isFlipped ? "flipped" : ""} ${card.isMatched ? "matched" : ""}"
-                 data-id="${card.id}"
-                 style="--card-color:${theme.color}">
+                 data-id="${card.id}">
               <div class="card-inner">
-                <div class="card-back ${sizeClass}" style="background:${theme.color}">
-                  <i class="bi ${theme.backIcon}"></i>
-                </div>
-                <div class="card-front ${sizeClass}" style="background:${theme.color}">
-                  <span class="card-symbol">${card.symbol}</span>
-                </div>
+                ${renderCardBack(sizeClass, state.settings.theme)}
+                ${renderCardFront(sizeClass, state.settings.theme, card.symbol, card.image)}
               </div>
             </div>
           `,
@@ -244,20 +294,18 @@ export function renderWinnerScreen(
 }
 
 export function updateScoreboard(state: GameState): void {
-  const chips = document.querySelectorAll(".score-chip");
-  chips.forEach((chip) => {
-    chip.classList.remove("active-blue", "active-orange");
-  });
   const scores = document.querySelector(".scores");
   if (scores) {
     const blue = scores.children[0];
     const orange = scores.children[1];
-    if (blue)
+    if (blue) {
       blue.innerHTML = `<span class="dot blue"></span> Blue ${state.scores.blue}`;
-    if (orange)
+      blue.className = `score-chip ${state.currentPlayer === "blue" ? "active-blue" : ""}`;
+    }
+    if (orange) {
       orange.innerHTML = `<span class="dot orange"></span> Orange ${state.scores.orange}`;
-    if (state.currentPlayer === "blue") blue?.classList.add("active-blue");
-    else orange?.classList.add("active-orange");
+      orange.className = `score-chip ${state.currentPlayer === "orange" ? "active-orange" : ""}`;
+    }
   }
   const playerDot = document.querySelector(".current-player .player-dot");
   if (playerDot) {
