@@ -1,0 +1,153 @@
+@use "variables" as *;
+
+// ===== Game Over =====
+.gameover-screen {
+  @include flex-center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: $bg-dark;
+  gap: 1.5rem;
+
+  .gameover-title {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: clamp(4rem, 12vw, 8rem);
+    color: $accent-teal;
+    text-shadow:
+      4px 4px 0 rgba(0, 0, 0, 0.3),
+      -2px -2px 0 rgba(255, 255, 255, 0.05);
+    letter-spacing: 2px;
+    line-height: 1;
+  }
+
+  .final-score-label {
+    font-size: 0.95rem;
+    color: $gray-light;
+    font-weight: 600;
+  }
+
+  .final-scores {
+    display: flex;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+
+    .score-chip {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 800;
+      font-size: 1rem;
+
+      .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 3px;
+
+        &.blue {
+          background: $blue;
+        }
+        &.orange {
+          background: $orange;
+        }
+      }
+
+      .label-blue {
+        color: $blue;
+      }
+      .label-orange {
+        color: $orange;
+      }
+    }
+  }
+}
+
+// ===== Winner =====
+.winner-screen {
+  @include flex-center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: $bg-dark;
+  gap: 1rem;
+  position: relative;
+  overflow: hidden;
+
+  .confetti-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    pointer-events: none;
+    overflow: hidden;
+
+    .confetti-piece {
+      position: absolute;
+      top: -10px;
+      width: 10px;
+      height: 14px;
+      border-radius: 2px;
+      animation: confettiFall var(--dur, 2s) ease-in var(--delay, 0s) forwards;
+      transform: rotate(var(--rot, 0deg));
+    }
+  }
+
+  @keyframes confettiFall {
+    0% {
+      transform: translateY(0) rotate(var(--rot, 0deg));
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(150px) rotate(calc(var(--rot, 0deg) + 360deg));
+      opacity: 0.3;
+    }
+  }
+
+  .winner-label {
+    font-size: 1.1rem;
+    color: $gray-light;
+    font-weight: 600;
+  }
+
+  .winner-name {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    letter-spacing: 3px;
+
+    &.blue {
+      color: $blue;
+    }
+    &.orange {
+      color: $orange;
+    }
+  }
+
+  .winner-icon {
+    font-size: 5rem;
+    margin: 0.5rem 0;
+
+    &.blue {
+      color: $blue;
+    }
+    &.orange {
+      color: $orange;
+    }
+  }
+
+  .back-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: $white;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 0.7rem 1.8rem;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+    transition: background 0.2s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+  }
+}

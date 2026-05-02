@@ -1,4 +1,16 @@
-body {
-  height: 100vh;
-  background-color: green;
+@use "variables";
+@use "start";
+@use "settings";
+@use "game";
+@use "endscreens";
+
+// Screen transitions
+.screen {
+  display: none;
+  width: 100%;
+  height: 100%;
+
+  &.active {
+    display: flex;
+  }
 }

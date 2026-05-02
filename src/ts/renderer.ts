@@ -1,0 +1,266 @@
+import type { GameState, Player } from "./types";
+import { THEMES } from "./themes";
+
+export function renderStartScreen(): string {
+  return `
+    <div class="start-screen screen active">
+      <span class="start-bg-icon bi bi-controller"></span>
+      <div class="start-content">
+        <p class="start-subtitle">It's play time.</p>
+        <h1>Ready to play?</h1>
+        <button class="play-btn" id="btn-play">
+          <i class="bi bi-controller"></i>
+          <span>Play</span>
+          <span>→</span>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+export function renderSettingsScreen(): string {
+  return `
+    <div class="settings-screen screen active">
+      <div class="settings-container">
+        <div class="settings-left">
+          <h2 class="settings-title">Settings</h2>
+
+          <div class="settings-section">
+            <div class="section-label">
+              <i class="bi bi-palette2"></i> Game themes
+            </div>
+            <div class="radio-group" id="theme-group">
+              ${[
+                ["code", "Code vibes theme"],
+                ["gaming", "Gaming theme"],
+                ["da", "DA Projects theme"],
+                ["food", "Foods theme"],
+              ]
+                .map(
+                  ([val, label], i) => `
+                <label class="radio-option">
+                  <input type="radio" name="theme" value="${val}" ${i === 0 ? "checked" : ""}>
+                  ${label}
+                </label>
+              `,
+                )
+                .join("")}
+            </div>
+          </div>
+
+          <div class="settings-section">
+            <div class="section-label">
+              <i class="bi bi-person"></i> Choose player
+            </div>
+            <div class="radio-group">
+              <label class="radio-option">
+                <input type="radio" name="player" value="blue" checked> Blue
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="player" value="orange"> Orange
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-section">
+            <div class="section-label">
+              <i class="bi bi-grid-3x3"></i> Board size
+            </div>
+            <div class="radio-group">
+              <label class="radio-option">
+                <input type="radio" name="boardSize" value="16" checked> 16 cards
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="boardSize" value="24"> 24 cards
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="boardSize" value="36"> 36 cards
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-right">
+          <div class="theme-preview" id="theme-preview">
+            ${renderThemePreview("code")}
+          </div>
+
+          <div class="start-bar">
+            <span class="bar-info">Game theme</span>
+            <span class="bar-info">Player</span>
+            <span class="bar-info">Board size</span>
+            <button class="start-game-btn" id="btn-start">
+              <i class="bi bi-play-fill"></i> Start
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderThemePreview(themeKey: string): string {
+  const theme = THEMES[themeKey as keyof typeof THEMES];
+  const cardCount = 8;
+  return `
+    <div class="preview-header">
+      <div class="preview-scores">
+        <span class="score-chip blue">Blue 0</span>
+        <span class="score-chip orange">Orange 0</span>
+      </div>
+      <span class="preview-exit">Exit game</span>
+    </div>
+    <div class="preview-cards">
+      ${Array(cardCount)
+        .fill(0)
+        .map(
+          () => `
+        <div class="preview-card" style="background:${theme.color}">
+          <i class="bi ${theme.backIcon}" style="color:rgba(255,255,255,0.3);font-size:0.7rem"></i>
+        </div>
+      `,
+        )
+        .join("")}
+    </div>
+  `;
+}
+
+export function updateThemePreview(themeKey: string): void {
+  const preview = document.getElementById("theme-preview");
+  if (preview) preview.innerHTML = renderThemePreview(themeKey);
+}
+
+export function renderGameScreen(state: GameState): string {
+  const theme = THEMES[state.settings.theme];
+  const sizeClass = `size-${state.settings.boardSize}`;
+
+  return `
+    <div class="game-screen screen active">
+      <header class="game-header">
+        <div class="scores">
+          <div class="score-chip ${state.currentPlayer === "blue" ? "active-blue" : ""}">
+            <span class="dot blue"></span>
+            Blue ${state.scores.blue}
+          </div>
+          <div class="score-chip ${state.currentPlayer === "orange" ? "active-orange" : ""}">
+            <span class="dot orange"></span>
+            Orange ${state.scores.orange}
+          </div>
+        </div>
+        <div class="current-player">
+          Current player:
+          <span class="player-dot ${state.currentPlayer}"></span>
+        </div>
+        <button class="exit-btn" id="btn-exit">
+          <i class="bi bi-box-arrow-right"></i> Exit game
+        </button>
+      </header>
+
+      <div class="board-wrapper">
+        <div class="board ${sizeClass}" id="board">
+          ${state.cards
+            .map(
+              (card) => `
+            <div class="memory-card ${sizeClass} ${card.isFlipped ? "flipped" : ""} ${card.isMatched ? "matched" : ""}"
+                 data-id="${card.id}"
+                 style="--card-color:${theme.color}">
+              <div class="card-inner">
+                <div class="card-back ${sizeClass}" style="background:${theme.color}">
+                  <i class="bi ${theme.backIcon}"></i>
+                </div>
+                <div class="card-front ${sizeClass}" style="background:${theme.color}">
+                  <span class="card-symbol">${card.symbol}</span>
+                </div>
+              </div>
+            </div>
+          `,
+            )
+            .join("")}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+export function renderGameOverScreen(state: GameState): string {
+  return `
+    <div class="gameover-screen screen active">
+      <h1 class="gameover-title">Game over</h1>
+      <p class="final-score-label">Final score</p>
+      <div class="final-scores">
+        <div class="score-chip">
+          <span class="dot blue"></span>
+          <span class="label-blue">Blue ${state.scores.blue}</span>
+        </div>
+        <div class="score-chip">
+          <span class="dot orange"></span>
+          <span class="label-orange">Orange ${state.scores.orange}</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+export function renderWinnerScreen(
+  winner: Player | "tie",
+  _state: GameState,
+): string {
+  const colors = [
+    "#e74c3c",
+    "#f1c40f",
+    "#2ecc71",
+    "#3498db",
+    "#9b59b6",
+    "#e67e22",
+  ];
+  const confetti = Array(30)
+    .fill(0)
+    .map((_, i) => {
+      const left = Math.random() * 100;
+      const color = colors[i % colors.length];
+      const dur = 1.5 + Math.random();
+      const delay = Math.random() * 0.8;
+      const rot = Math.random() * 360;
+      return `<div class="confetti-piece"
+      style="left:${left}%;background:${color};--dur:${dur}s;--delay:${delay}s;--rot:${rot}deg;width:${6 + Math.random() * 8}px;height:${8 + Math.random() * 12}px"></div>`;
+    })
+    .join("");
+
+  const winnerName =
+    winner === "tie" ? "IT'S A TIE!" : `${winner.toUpperCase()} PLAYER`;
+  const colorClass = winner === "tie" ? "blue" : winner;
+
+  return `
+    <div class="winner-screen screen active">
+      <div class="confetti-area">${confetti}</div>
+      <p class="winner-label">The winner is</p>
+      <h1 class="winner-name ${colorClass}">${winnerName}</h1>
+      <div class="winner-icon ${colorClass}">
+        <i class="bi bi-person-fill"></i>
+      </div>
+      <button class="back-btn" id="btn-back">Back to start</button>
+    </div>
+  `;
+}
+
+export function updateScoreboard(state: GameState): void {
+  const chips = document.querySelectorAll(".score-chip");
+  chips.forEach((chip) => {
+    chip.classList.remove("active-blue", "active-orange");
+  });
+  const scores = document.querySelector(".scores");
+  if (scores) {
+    const blue = scores.children[0];
+    const orange = scores.children[1];
+    if (blue)
+      blue.innerHTML = `<span class="dot blue"></span> Blue ${state.scores.blue}`;
+    if (orange)
+      orange.innerHTML = `<span class="dot orange"></span> Orange ${state.scores.orange}`;
+    if (state.currentPlayer === "blue") blue?.classList.add("active-blue");
+    else orange?.classList.add("active-orange");
+  }
+  const playerDot = document.querySelector(".current-player .player-dot");
+  if (playerDot) {
+    playerDot.className = `player-dot ${state.currentPlayer}`;
+  }
+}

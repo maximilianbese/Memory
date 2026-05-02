@@ -1,0 +1,227 @@
+@use "variables" as *;
+
+.settings-screen {
+  @include flex-center;
+  width: 100%;
+  height: 100%;
+  background: #f5f5f5;
+  color: #1a1a1a;
+  padding: 2rem;
+
+  .settings-container {
+    display: flex;
+    gap: 4rem;
+    align-items: flex-start;
+    max-width: 900px;
+    width: 100%;
+  }
+
+  .settings-left {
+    flex: 1;
+  }
+
+  .settings-title {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 2.8rem;
+    color: #1a1a1a;
+    margin-bottom: 0.2rem;
+    letter-spacing: 1px;
+
+    &::after {
+      content: "";
+      display: block;
+      width: 60px;
+      height: 3px;
+      background: $accent-yellow;
+      margin-top: 0.3rem;
+      border-radius: 2px;
+    }
+  }
+
+  .settings-section {
+    margin-top: 1.8rem;
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 800;
+      font-size: 1rem;
+      margin-bottom: 0.8rem;
+      color: #1a1a1a;
+
+      i {
+        font-size: 1.1rem;
+      }
+    }
+
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: #333;
+      font-weight: 600;
+
+      input[type="radio"] {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 18px;
+        height: 18px;
+        border: 2px solid #aaa;
+        border-radius: 50%;
+        cursor: pointer;
+        position: relative;
+        flex-shrink: 0;
+        transition: border-color 0.2s;
+
+        &:checked {
+          border-color: $accent-yellow;
+
+          &::after {
+            content: "";
+            position: absolute;
+            inset: 3px;
+            background: $accent-yellow;
+            border-radius: 50%;
+          }
+        }
+      }
+    }
+  }
+
+  .settings-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1.5rem;
+    padding-top: 3.5rem;
+  }
+
+  .theme-preview {
+    width: 260px;
+    height: 180px;
+    background: $bg-dark;
+    border-radius: 12px;
+    @include card-shadow;
+    overflow: hidden;
+    position: relative;
+
+    .preview-header {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.5rem 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .preview-scores {
+        display: flex;
+        gap: 0.5rem;
+
+        .score-chip {
+          font-size: 0.65rem;
+          padding: 0.2rem 0.5rem;
+          border-radius: 4px;
+          font-weight: 700;
+
+          &.blue {
+            background: $blue;
+            color: white;
+          }
+          &.orange {
+            background: $orange;
+            color: white;
+          }
+        }
+      }
+
+      .preview-exit {
+        font-size: 0.6rem;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+      }
+    }
+
+    .preview-cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      padding: 0.5rem;
+
+      .preview-card {
+        height: 28px;
+        border-radius: 4px;
+        background: $theme-code;
+        @include flex-center;
+
+        i {
+          font-size: 0.6rem;
+          color: rgba(255, 255, 255, 0.5);
+        }
+
+        &.gaming {
+          background: $theme-gaming;
+        }
+        &.da {
+          background: $theme-da;
+        }
+        &.food {
+          background: $theme-food;
+        }
+      }
+    }
+  }
+
+  .start-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #e8e8e8;
+    border-radius: 10px;
+    padding: 0.6rem 1rem;
+    width: 260px;
+
+    .bar-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #555;
+
+      &:not(:first-child) {
+        &::before {
+          content: "/";
+          color: #aaa;
+        }
+      }
+    }
+
+    .start-game-btn {
+      margin-left: auto;
+      background: $accent-yellow;
+      color: #1a1a1a;
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: transform 0.15s;
+
+      &:hover {
+        transform: translateY(-1px);
+      }
+    }
+  }
+}

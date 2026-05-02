@@ -1,0 +1,58 @@
+// ========== Variables ==========
+$bg-dark: #2e2e2e;
+$bg-card: #3a3a3a;
+$accent-yellow: #d4e84a;
+$accent-teal: #4ecdc4;
+$blue: #3a9ded;
+$orange: #f5832a;
+$white: #ffffff;
+$gray-light: #b0b0b0;
+$gray-muted: #555555;
+
+// Card themes
+$theme-code: #4ecdc4;
+$theme-gaming: #a855f7;
+$theme-da: #f59e0b;
+$theme-food: #ef4444;
+
+// ========== Mixins ==========
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin card-shadow {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+// ========== Reset ==========
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-family: "Nunito", sans-serif;
+  background: $bg-dark;
+  color: $white;
+  overflow: hidden;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-family: "Nunito", sans-serif;
+}
