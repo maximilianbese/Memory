@@ -102,14 +102,23 @@ export function renderSettingsScreen(): string {
 function renderThemePreview(themeKey: string): string {
   const theme = THEMES[themeKey as keyof typeof THEMES];
   const cardCount = 8;
+
+  // Wir nutzen das neue spezielle Vorschaubild
+  const specialPreviewImg = theme.previewImage;
+
   return `
-    <div class="preview-header">
-      <div class="preview-scores">
-        <span class="score-chip blue">Blue 0</span>
-        <span class="score-chip orange">Orange 0</span>
-      </div>
-      <span class="preview-exit">Exit game</span>
+    
+    <div class="theme-special-preview-container">
+       ${
+         specialPreviewImg
+           ? `<img src="${specialPreviewImg}" class="theme-special-img" alt="${theme.name} Preview">`
+           : `<div class="theme-special-placeholder" style="background-color: ${theme.color}">
+              <i class="bi ${theme.backIcon}"></i>
+            </div>`
+       }
+       <div class="theme-special-label">${theme.name}</div>
     </div>
+
     <div class="preview-cards">
       ${Array(cardCount)
         .fill(0)
@@ -118,10 +127,9 @@ function renderThemePreview(themeKey: string): string {
         <div class="preview-card" style="background:${theme.color}">
           ${
             theme.backLogo
-              ? `<img src="${theme.backLogo}" class="preview-logo" alt="logo" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">`
-              : ""
+              ? `<img src="${theme.backLogo}" class="preview-logo" alt="logo">`
+              : `<i class="bi ${theme.backIcon}" style="color:rgba(255,255,255,0.35);font-size:0.7rem;"></i>`
           }
-          <i class="bi ${theme.backIcon}" style="color:rgba(255,255,255,0.35);font-size:0.7rem;${theme.backLogo ? "display:none" : ""}"></i>
         </div>
       `,
         )

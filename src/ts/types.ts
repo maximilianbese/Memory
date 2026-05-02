@@ -34,4 +34,5 @@ export interface ThemeConfig {
   symbols: string[]; // Emoji Fallbacks
   images?: string[]; // Pfade zu Kartenbildern (Vorderseite)
   name: string;
+  previewImage?: string;
 }

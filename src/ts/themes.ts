@@ -7,6 +7,8 @@ export const THEMES: Record<GameTheme, ThemeConfig> = {
     backIcon: "bi-display-code",
     // Logo auf der Rückseite – leg die Datei unter public/logos/code-logo.png ab
     backLogo: "./src/assets/card-back-logo.svg",
+    previewImage:
+      "./src/assets/code-vibes-theme-img/coding-vibes-settings-preview.svg",
     // Bilder auf der Vorderseite – leg sie unter public/images/code/ ab
     // Dateinamen: react.png, python.png, rust.png, docker.png, ...
     images: [
@@ -55,6 +57,8 @@ export const THEMES: Record<GameTheme, ThemeConfig> = {
     color: "#a855f7",
     backIcon: "bi-controller",
     backLogo: "/logos/gaming-logo.png",
+    previewImage:
+      "./src/assets/gaming-theme-img/gaming-theme-settings-preview.svg",
     images: [
       "./src/assets/gaming-theme-img/circle-mask-card.svg",
       "./src/assets/gaming-theme-img/square-mask-card.svg",
@@ -96,11 +100,14 @@ export const THEMES: Record<GameTheme, ThemeConfig> = {
       "💥",
     ],
   },
+
   da: {
     name: "DA Projects",
     color: "#f59e0b",
     backIcon: "bi-kanban",
     backLogo: "./src/assets/card-back-logo.svg",
+    previewImage:
+      "./src/assets/da-projects-theme-img/da-projects-settings-preview.svg",
     images: [
       "./src/assets/da-projects-theme-img/noodle-bowl-card.svg",
       "./src/assets/da-projects-theme-img/hot-soup-card.svg",
@@ -147,6 +154,8 @@ export const THEMES: Record<GameTheme, ThemeConfig> = {
     color: "#ef4444",
     backIcon: "bi-egg-fried",
     backLogo: "./src/assets/card-back-logo.svg",
+    previewImage:
+      "./src/assets/foods-theme-img/foods-theme-settings-preview.svg",
     images: [
       "./src/assets/foods-theme-img/french-fries-card.svg",
       "./src/assets/foods-theme-img/pizza-slice-card.svg",
