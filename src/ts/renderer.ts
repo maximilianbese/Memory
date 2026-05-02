@@ -27,7 +27,7 @@ export function renderSettingsScreen(): string {
 
           <div class="settings-section">
             <div class="section-label">
-              <i class="bi bi-palette2"></i> Game themes
+              <img class="bi bi-palette2"><img src="./src/assets/settings/palette.svg"></img></i> Game themes
             </div>
             <div class="radio-group" id="theme-group">
               ${[
@@ -49,8 +49,8 @@ export function renderSettingsScreen(): string {
           </div>
 
           <div class="settings-section">
-            <div class="section-label">
-              <i class="bi bi-person"></i> Choose player
+            <div class="section-label"><img src="./src/assets/settings/chess_pawn.svg"></img>
+              <img class="bi bi-person"></i> Choose player
             </div>
             <div class="radio-group">
               <label class="radio-option">
@@ -63,7 +63,7 @@ export function renderSettingsScreen(): string {
           </div>
 
           <div class="settings-section">
-            <div class="section-label">
+            <div class="section-label"><img src="./src/assets/settings/board-size.svg"></img>
               <i class="bi bi-grid-3x3"></i> Board size
             </div>
             <div class="radio-group">

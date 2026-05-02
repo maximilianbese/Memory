@@ -375,39 +375,48 @@
   .start-bar {
     display: flex;
     align-items: center;
-    gap: 0.7rem;
-    background: rgba(0, 0, 0, 0.08);
+    justify-content: space-between;
+    background: rgba(246, 246, 246, 1);
     border-radius: 10px;
-    padding: 0.55rem 0.9rem;
-    width: 270px;
+    padding: 0.55rem 1.5rem; // Padding erhöht für besseren Look
+    width: 546px;
+    height: 81px;
 
     .bar-info {
-      font-size: 0.75rem;
+      font-size: 20px;
       font-weight: 700;
-      color: #888;
+      color: #616161;
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
 
+      // Das Trennzeichen
       &:not(:first-child)::before {
-        content: " / ";
-        color: #bbb;
+        content: "/"; // Der Slash als Text
+        color: #f0ea6e; // Dein Gelb
+        font-size: 56px; // Größer als der Text
+        font-weight: 900; // Dünner für den eleganten Look
+        margin: 0 20px; // Erzeugt den Abstand links und rechts
+        display: inline-block; // Wichtig für Transformationen
+        transform: scaleY(1.2); // Macht den Strich länger
       }
     }
 
     .start-game-btn {
-      margin-left: auto;
-      background: $accent-yellow;
+      background: #f0ea6e;
       color: #1a1a1a;
-      font-weight: 800;
-      font-size: 0.82rem;
-      padding: 0.45rem 0.9rem;
+      font-weight: bold;
+      font-size: 20px;
+      border: none;
       border-radius: 6px;
       display: flex;
       align-items: center;
-      gap: 0.35rem;
-      transition: transform 0.15s;
-
-      &:hover {
-        transform: translateY(-1px);
-      }
+      justify-content: center;
+      gap: 0.5rem;
+      height: 54px;
+      width: 124px;
+      cursor: pointer;
+      margin-left: 10px;
     }
   }
 
