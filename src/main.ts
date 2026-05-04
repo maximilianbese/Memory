@@ -24,20 +24,57 @@ let state: GameState = {
 
 // ===== Screen navigation =====
 function showStart(): void {
+  document.body.style.fontFamily = "'Nunito', sans-serif";
   app.innerHTML = renderStartScreen();
   document.getElementById("btn-play")?.addEventListener("click", showSettings);
+}
+
+const THEME_LABELS: Record<string, string> = {
+  code: "Code vibes theme",
+  gaming: "Gaming theme",
+  da: "DA Projects theme",
+  food: "Foods theme",
+};
+
+function updateBarInfo(): void {
+  const theme =
+    document.querySelector<HTMLInputElement>('input[name="theme"]:checked')
+      ?.value ?? "code";
+  const player =
+    document.querySelector<HTMLInputElement>('input[name="player"]:checked')
+      ?.value ?? "blue";
+  const size =
+    document.querySelector<HTMLInputElement>('input[name="boardSize"]:checked')
+      ?.value ?? "16";
+
+  const barTheme = document.getElementById("bar-theme");
+  const barPlayer = document.getElementById("bar-player");
+  const barSize = document.getElementById("bar-size");
+
+  if (barTheme) barTheme.textContent = THEME_LABELS[theme] ?? theme;
+  if (barPlayer)
+    barPlayer.textContent = player.charAt(0).toUpperCase() + player.slice(1);
+  if (barSize) barSize.textContent = `${size} cards`;
 }
 
 function showSettings(): void {
   app.innerHTML = renderSettingsScreen();
 
-  // Theme radio -> update preview
+  // Theme radio -> update preview + bar
   document.querySelectorAll('input[name="theme"]').forEach((input) => {
     input.addEventListener("change", (e) => {
       const val = (e.target as HTMLInputElement).value;
       updateThemePreview(val);
+      updateBarInfo();
     });
   });
+
+  // Player + boardSize -> update bar
+  document
+    .querySelectorAll('input[name="player"], input[name="boardSize"]')
+    .forEach((input) => {
+      input.addEventListener("change", () => updateBarInfo());
+    });
 
   document.getElementById("btn-start")?.addEventListener("click", () => {
     const themeEl = document.querySelector<HTMLInputElement>(
@@ -60,6 +97,17 @@ function showSettings(): void {
   });
 }
 
+const THEME_FONTS: Record<string, string> = {
+  code: "'Red Rose', sans-serif",
+  gaming: "'Orbitron', sans-serif",
+  da: "'Figtree', sans-serif",
+  food: "'Klee One', cursive",
+};
+
+function applyThemeFont(theme: string): void {
+  document.body.style.fontFamily = THEME_FONTS[theme] ?? "'Nunito', sans-serif";
+}
+
 function startGame(settings: GameSettings): void {
   state = {
     settings,
@@ -69,13 +117,48 @@ function startGame(settings: GameSettings): void {
     flippedCards: [],
     isLocked: false,
   };
+  applyThemeFont(settings.theme);
   renderGame();
 }
 
 function renderGame(): void {
   app.innerHTML = renderGameScreen(state);
   attachCardListeners();
-  document.getElementById("btn-exit")?.addEventListener("click", showStart);
+  attachExitListener();
+}
+
+function attachExitListener(): void {
+  const exitBtn = document.getElementById("btn-exit");
+  const overlay = document.getElementById("quit-overlay");
+  const popup = document.getElementById("quit-popup");
+  const backBtn = document.getElementById("btn-quit-back");
+  const confirmExitBtn = document.getElementById("btn-quit-exit");
+
+  // Apply theme class to popup
+  if (popup) {
+    popup.classList.remove(
+      "theme-code",
+      "theme-gaming",
+      "theme-da",
+      "theme-food",
+    );
+    popup.classList.add(`theme-${state.settings.theme}`);
+  }
+
+  exitBtn?.addEventListener("click", () => {
+    if (overlay) overlay.style.display = "flex";
+  });
+
+  backBtn?.addEventListener("click", () => {
+    if (overlay) overlay.style.display = "none";
+  });
+
+  // Close on overlay backdrop click
+  overlay?.addEventListener("click", (e) => {
+    if (e.target === overlay) overlay.style.display = "none";
+  });
+
+  confirmExitBtn?.addEventListener("click", showStart);
 }
 
 function attachCardListeners(): void {

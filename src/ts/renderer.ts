@@ -86,9 +86,9 @@ export function renderSettingsScreen(): string {
           </div>
 
           <div class="start-bar">
-            <span class="bar-info">Game theme</span>
-            <span class="bar-info">Player</span>
-            <span class="bar-info">Board size</span>
+            <span class="bar-info" id="bar-theme">Code vibes theme</span>
+            <span class="bar-info" id="bar-player">Blue</span>
+            <span class="bar-info" id="bar-size">16 cards</span>
             <button class="start-game-btn" id="btn-start">
               <i class="bi bi-play-fill"></i> Start
             </button>
@@ -217,6 +217,18 @@ export function renderGameScreen(state: GameState): string {
         <button class="exit-btn" id="btn-exit">
           <i class="bi bi-box-arrow-right"></i> Exit game
         </button>
+      </header>
+
+      <!-- Quit Confirmation Popup -->
+      <div class="quit-overlay" id="quit-overlay" style="display:none;">
+        <div class="quit-popup" id="quit-popup">
+          <p class="quit-question">Are you sure you want to quit the game?</p>
+          <div class="quit-buttons">
+            <button class="quit-btn quit-btn--back" id="btn-quit-back">Back to game</button>
+            <button class="quit-btn quit-btn--exit" id="btn-quit-exit">Exit game</button>
+          </div>
+        </div>
+      </div>
       </header>
 
       <div class="board-wrapper">

@@ -55,7 +55,7 @@ export const THEMES: Record<GameTheme, ThemeConfig> = {
   gaming: {
     name: "Gaming",
     color: "#a855f7",
-    backIcon: "bi-controller",
+    backIcon: "",
     backLogo: "/logos/gaming-logo.png",
     previewImage:
       "./src/assets/gaming-theme-img/gaming-theme-settings-preview.svg",

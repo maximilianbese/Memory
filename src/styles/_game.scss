@@ -114,7 +114,9 @@
   aspect-ratio: 1;
   perspective: 600px;
   cursor: pointer;
+  position: relative;
 
+  // Größen-Varianten
   &.size-16 {
     width: clamp(60px, 14vw, 110px);
   }
@@ -134,17 +136,37 @@
     border-radius: 10px;
   }
 
+  // --- Zustände: Flip & Match ---
+
+  // 1. Wenn umgedreht ODER passend: Rotieren und Hintergrund transparent
   &.flipped .card-inner,
   &.matched .card-inner {
     transform: rotateY(180deg);
   }
 
+  &.flipped,
   &.matched {
-    cursor: default;
     .card-front {
-      opacity: 0.7;
+      background: transparent !important; // Hintergrund wird beim Umdrehen sofort transparent
     }
   }
+
+  // 2. Nur wenn die Karten zusammenpassen: Border anzeigen
+  &.matched {
+    cursor: default;
+
+    .card-front {
+      border: 5px solid rgba(77, 213, 188, 1); // Border nur im matched Zustand
+      box-sizing: border-box; // Verhindert, dass die Karte durch den Border größer wird
+      opacity: 0.8;
+    }
+
+    .card-back {
+      display: none; // Rückseite entfernen, um saubere Transparenz zu garantieren
+    }
+  }
+
+  // --- Basis-Styles Front & Back ---
 
   .card-back,
   .card-front {
@@ -157,23 +179,25 @@
     overflow: hidden;
   }
 
-  // ---- Rückseite ----
+  // ---- Rückseite (Default Look) ----
   .card-back {
+    background-color: #333; // Oder deine gewünschte Standardfarbe
+
     i {
       font-size: 1.4rem;
       color: rgba(255, 255, 255, 0.35);
     }
 
-    // Logo-Bild auf der Rückseite
     .card-back-logo {
       width: 55%;
       height: 55%;
       object-fit: contain;
-      filter: brightness(0) invert(1); // weiß einfärben (passt auf alle farbigen BGs)
+      filter: brightness(0) invert(1);
       opacity: 0.55;
       pointer-events: none;
     }
 
+    // Größenanpassungen Rückseite
     &.size-16 {
       i {
         font-size: 1.6rem;
@@ -194,11 +218,11 @@
     }
   }
 
-  // ---- Vorderseite ----
+  // ---- Vorderseite (Das Bild/Symbol) ----
   .card-front {
     transform: rotateY(180deg);
+    background-color: #eee; // Farbe vor dem Umdrehen (wird durch .flipped transparent)
 
-    // Bild auf der Vorderseite
     .card-front-img {
       width: 72%;
       height: 72%;
@@ -207,12 +231,12 @@
       border-radius: 4px;
     }
 
-    // Emoji-Fallback
     .card-symbol {
       font-size: 2rem;
       line-height: 1;
     }
 
+    // Größenanpassungen Vorderseite
     &.size-16 {
       .card-front-img {
         width: 76%;
@@ -233,6 +257,7 @@
     }
   }
 
+  // Hover-Effekt (nur auf klickbare Karten)
   &:hover:not(.flipped):not(.matched) .card-inner {
     transform: scale(1.04);
   }
@@ -246,5 +271,174 @@
     object-fit: contain;
     filter: brightness(0) invert(1);
     opacity: 0.5;
+  }
+}
+
+// ===== Quit Popup =====
+.quit-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(2px);
+}
+
+.quit-popup {
+  background: #fff;
+  border-radius: 18px;
+  padding: 2.5rem 2.5rem 2rem;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: popupIn 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  .quit-question {
+    font-size: 1.55rem;
+    font-weight: 800;
+    line-height: 1.25;
+    margin-bottom: 2rem;
+  }
+
+  .quit-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .quit-btn {
+    flex: 1;
+    padding: 0.75rem 1.25rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: "Nunito", sans-serif;
+    cursor: pointer;
+    transition:
+      opacity 0.15s,
+      transform 0.15s;
+    &:hover {
+      opacity: 0.85;
+      transform: scale(1.02);
+    }
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  // ---- Code Vibes theme (teal, clean) ----
+  &.theme-code {
+    background: #fff;
+    border-radius: 6px;
+
+    .quit-question {
+      color: #222;
+      font-family: "Nunito", sans-serif;
+    }
+
+    .quit-btn--back {
+      background: #4ecdc4;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+    }
+    .quit-btn--exit {
+      background: #fff;
+      color: #4ecdc4;
+      border: 2px solid #4ecdc4;
+      border-radius: 4px;
+    }
+  }
+
+  // ---- Gaming theme (pink/magenta, rounded) ----
+  &.theme-gaming {
+    background: #e8eaf0;
+    border-radius: 18px;
+
+    .quit-question {
+      color: #1e3a4f;
+      font-family: "Nunito", sans-serif;
+    }
+
+    .quit-btn--back {
+      background: #e91e8c;
+      color: #fff;
+      border: none;
+      border-radius: 28px;
+    }
+    .quit-btn--exit {
+      background: #fff;
+      color: #e91e8c;
+      border: 2px solid #e91e8c;
+      border-radius: 28px;
+    }
+  }
+
+  // ---- DA Projects theme (blue-grey, soft rounded) ----
+  &.theme-da {
+    background: #dde3ec;
+    border-radius: 16px;
+
+    .quit-question {
+      color: #1e3a4f;
+      font-family: "Nunito", sans-serif;
+    }
+
+    .quit-btn--back {
+      background: #b0c8d8;
+      color: #1e3a4f;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+    }
+    .quit-btn--exit {
+      background: #e87d6a;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+    }
+  }
+
+  // ---- Food theme (orange/warm, bubbly) ----
+  &.theme-food {
+    background: #dde3ec;
+    border-radius: 18px;
+
+    .quit-question {
+      color: #d46a00;
+      font-family: "Nunito", sans-serif;
+      font-style: normal;
+    }
+
+    .quit-btn--back {
+      background: #f5a623;
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .quit-btn--exit {
+      background: #fff;
+      color: #f5a623;
+      border: 2px solid #f5a623;
+      border-radius: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+  }
+}
+
+@keyframes popupIn {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
   }
 }
