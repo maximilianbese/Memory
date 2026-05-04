@@ -298,15 +298,16 @@ export function renderWinnerScreen(
 
   const winnerName =
     winner === "tie" ? "IT'S A TIE!" : `${winner.toUpperCase()} PLAYER`;
-  const colorClass = winner === "tie" ? "blue" : winner;
+  const colorClass = winner === "tie" ? "blue" : winner; // "blue" oder "orange"
 
   return `
     <div class="winner-screen screen active">
       <div class="confetti-area">${confetti}</div>
       <p class="winner-label">The winner is</p>
       <h1 class="winner-name ${colorClass}">${winnerName}</h1>
-      <div class="winner-icon ${colorClass}">
-        <i class="bi bi-person-fill"></i>
+      <div class="winner-icon">
+        <!-- Hier fügen wir die colorClass hinzu -->
+        <i class="bi bi-person-fill ${colorClass}"></i>
       </div>
       <button class="back-btn" id="btn-back">Back to start</button>
     </div>

@@ -106,6 +106,15 @@ const THEME_FONTS: Record<string, string> = {
 
 function applyThemeFont(theme: string): void {
   document.body.style.fontFamily = THEME_FONTS[theme] ?? "'Nunito', sans-serif";
+
+  // Entferne alte Theme-Klassen und füge die aktuelle hinzu
+  document.body.classList.remove(
+    "theme-code",
+    "theme-gaming",
+    "theme-da",
+    "theme-food",
+  );
+  document.body.classList.add(`theme-${theme}`);
 }
 
 function startGame(settings: GameSettings): void {

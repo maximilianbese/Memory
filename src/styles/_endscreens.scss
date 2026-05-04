@@ -1,6 +1,6 @@
 @use "variables" as *;
 
-// ===== Game Over =====
+// ===== Game Over Screen =====
 .gameover-screen {
   @include flex-center;
   flex-direction: column;
@@ -63,7 +63,7 @@
   }
 }
 
-// ===== Winner =====
+// ===== Winner Screen =====
 .winner-screen {
   @include flex-center;
   flex-direction: column;
@@ -124,15 +124,60 @@
     }
   }
 
-  .winner-icon {
-    font-size: 5rem;
-    margin: 0.5rem 0;
+  // ===== Winner Screen Bilder pro Theme =====
 
-    &.blue {
-      color: $blue;
-    }
-    &.orange {
-      color: $orange;
+  .winner-icon {
+    .bi-person-fill {
+      display: inline-block;
+      width: 120px;
+      height: 120px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+
+      &::before {
+        content: none !important;
+      }
+
+      // --- DEFAULT / CODE THEME ---
+      .theme-code & {
+        &.blue {
+          background-image: url("../assets/code-vibes-theme-img/blue-winner.svg");
+        }
+        &.orange {
+          background-image: url("../assets/code-vibes-theme-img/orange-winner.svg");
+        }
+      }
+
+      // --- GAMING THEME ---
+      .theme-gaming & {
+        &.blue {
+          background-image: url("../assets/gaming-theme-img/winner.svg");
+        }
+        &.orange {
+          background-image: url("../assets/gaming-theme-img/winner.svg");
+        }
+      }
+
+      // --- DA THEME ---
+      .theme-da & {
+        &.blue {
+          background-image: url("../assets/da-projects-theme-img/blue-winner.svg");
+        }
+        &.orange {
+          background-image: url("../assets/da-projects-theme-img/orange-winner.svg");
+        }
+      }
+
+      // --- FOOD THEME ---
+      .theme-food & {
+        &.blue {
+          background-image: url("../assets/foods-theme-img/blue-winner.svg");
+        }
+        &.orange {
+          background-image: url("../assets/foods-theme-img/orange-winner.svg");
+        }
+      }
     }
   }
 
@@ -145,6 +190,7 @@
     border-radius: 8px;
     margin-top: 0.5rem;
     transition: background 0.2s;
+    cursor: pointer;
 
     &:hover {
       background: rgba(255, 255, 255, 0.18);
