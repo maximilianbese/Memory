@@ -165,7 +165,7 @@
 
     // --- Gaming ---
     &.preview-gaming {
-      background: #1e1028;
+      background: #150d2e;
 
       .preview-header {
         background: rgba(0, 0, 0, 0.4);
@@ -173,16 +173,16 @@
 
       .preview-mini-board {
         .mini-card {
-          background: $theme-gaming;
+          background: #e91e8c;
         }
       }
 
       .preview-card-showcase {
         .showcase-card-back {
-          background: $theme-gaming;
+          background: #e91e8c;
         }
         .showcase-card-front {
-          background: $theme-gaming;
+          background: #e91e8c;
         }
       }
     }
@@ -197,16 +197,16 @@
 
       .preview-mini-board {
         .mini-card {
-          background: #2a6496;
+          background: #4a8db5;
         }
       }
 
       .preview-card-showcase {
         .showcase-card-back {
-          background: #2a6496;
+          background: #4a8db5;
         }
         .showcase-card-front {
-          background: #2a6496;
+          background: #4a8db5;
         }
       }
     }
@@ -379,7 +379,7 @@
     background: rgba(246, 246, 246, 1);
     border-radius: 10px;
     padding: 0.55rem 1.5rem; // Padding erhöht für besseren Look
-    width: 546px;
+    width: 650px;
     height: 81px;
 
     .bar-info {
@@ -389,6 +389,8 @@
       display: flex;
       align-items: center;
       white-space: nowrap;
+      min-width: 160px;
+      justify-content: center;
 
       // Das Trennzeichen
       &:not(:first-child)::before {

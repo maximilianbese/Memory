@@ -140,7 +140,36 @@ function renderThemePreview(themeKey: string): string {
 
 export function updateThemePreview(themeKey: string): void {
   const preview = document.getElementById("theme-preview");
-  if (preview) preview.innerHTML = renderThemePreview(themeKey);
+  if (!preview) return;
+
+  const theme = THEMES[themeKey as keyof typeof THEMES];
+
+  // Update special preview image without replacing the whole DOM (avoids flicker)
+  const specialImg =
+    preview.querySelector<HTMLImageElement>(".theme-special-img");
+  const specialLabel = preview.querySelector<HTMLElement>(
+    ".theme-special-label",
+  );
+
+  if (specialImg && theme.previewImage) {
+    // Fade out → swap src → fade in
+    specialImg.style.transition = "opacity 0.15s ease";
+    specialImg.style.opacity = "0";
+    setTimeout(() => {
+      specialImg.src = theme.previewImage!;
+      specialImg.alt = `${theme.name} Preview`;
+      specialImg.style.opacity = "1";
+    }, 150);
+  }
+
+  if (specialLabel) {
+    specialLabel.textContent = theme.name;
+  }
+
+  // Update mini preview cards color
+  preview.querySelectorAll<HTMLElement>(".preview-card").forEach((card) => {
+    card.style.background = theme.color;
+  });
 }
 
 /** Rendert die Kartenrückseite: Logo-Bild wenn vorhanden, sonst Icon */
@@ -166,11 +195,10 @@ function renderCardBack(sizeClass: string, themeKey: string): string {
   `;
 }
 
-/** Rendert die Kartenvorderseite: Bild wenn vorhanden, sonst Emoji */
+/** Rendert die Kartenvorderseite: Bild wenn vorhanden, sonst leere Fläche */
 function renderCardFront(
   sizeClass: string,
   themeKey: string,
-  symbol: string,
   image?: string,
 ): string {
   const theme = THEMES[themeKey as keyof typeof THEMES];
@@ -180,16 +208,14 @@ function renderCardFront(
         <img
           src="${image}"
           class="card-front-img"
-          alt="${symbol}"
-          onerror="this.style.display='none';this.nextElementSibling.style.display='block'"
+          alt="card"
+          onerror="this.style.display='none'"
         />
-        <span class="card-symbol" style="display:none">${symbol}</span>
       </div>
     `;
   }
   return `
     <div class="card-front ${sizeClass}" style="background:${theme.color}">
-      <span class="card-symbol">${symbol}</span>
     </div>
   `;
 }
@@ -240,7 +266,7 @@ export function renderGameScreen(state: GameState): string {
                  data-id="${card.id}">
               <div class="card-inner">
                 ${renderCardBack(sizeClass, state.settings.theme)}
-                ${renderCardFront(sizeClass, state.settings.theme, card.symbol, card.image)}
+                ${renderCardFront(sizeClass, state.settings.theme, card.image)}
               </div>
             </div>
           `,
@@ -271,10 +297,29 @@ export function renderGameOverScreen(state: GameState): string {
   `;
 }
 
-export function renderWinnerScreen(
-  winner: Player | "tie",
-  _state: GameState,
-): string {
+export function renderDrawScreen(state: GameState): string {
+  const theme = state.settings.theme;
+
+  const drawImgs: Record<string, string> = {
+    code: "./src/assets/code-vibes-theme-img/draw.svg",
+    gaming: "./src/assets/gaming-theme-img/draw.svg",
+    da: "./src/assets/da-projects-theme-img/draw.svg",
+    food: "./src/assets/foods-theme-img/draw.svg",
+  };
+
+  return `
+    <div class="draw-screen screen active">
+      <p class="draw-label">It's a</p>
+      <h1 class="draw-title">DRAW</h1>
+      <div class="draw-icon">
+        <img src="${drawImgs[theme]}" alt="Draw" class="draw-img">
+      </div>
+      <button class="back-btn" id="btn-back">Back to start</button>
+    </div>
+  `;
+}
+
+export function renderWinnerScreen(winner: Player, _state: GameState): string {
   const colors = [
     "#e74c3c",
     "#f1c40f",
@@ -296,9 +341,8 @@ export function renderWinnerScreen(
     })
     .join("");
 
-  const winnerName =
-    winner === "tie" ? "IT'S A TIE!" : `${winner.toUpperCase()} PLAYER`;
-  const colorClass = winner === "tie" ? "blue" : winner; // "blue" oder "orange"
+  const winnerName = `${winner.toUpperCase()} PLAYER`;
+  const colorClass = winner;
 
   return `
     <div class="winner-screen screen active">

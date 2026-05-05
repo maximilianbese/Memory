@@ -6,6 +6,7 @@ import {
   renderSettingsScreen,
   renderGameScreen,
   renderGameOverScreen,
+  renderDrawScreen,
   renderWinnerScreen,
   updateThemePreview,
   updateScoreboard,
@@ -257,12 +258,13 @@ function showGameOver(): void {
 }
 
 function showWinner(): void {
-  let winner: Player | "tie";
-  if (state.scores.blue > state.scores.orange) winner = "blue";
-  else if (state.scores.orange > state.scores.blue) winner = "orange";
-  else winner = "tie";
-
-  app.innerHTML = renderWinnerScreen(winner, state);
+  if (state.scores.blue === state.scores.orange) {
+    app.innerHTML = renderDrawScreen(state);
+  } else {
+    const winner: Player =
+      state.scores.blue > state.scores.orange ? "blue" : "orange";
+    app.innerHTML = renderWinnerScreen(winner, state);
+  }
   document.getElementById("btn-back")?.addEventListener("click", showStart);
 }
 

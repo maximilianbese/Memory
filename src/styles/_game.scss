@@ -7,6 +7,39 @@
   height: 100%;
   background: $bg-dark;
 
+  // Theme-spezifische Hintergründe
+  .theme-gaming & {
+    background: $bg-gaming;
+    color: $white;
+  }
+  .theme-da & {
+    background: $bg-da;
+    color: $white;
+  }
+  .theme-food & {
+    background: $bg-food;
+    color: #1a1a1a;
+
+    .game-header {
+      background: rgba(0, 0, 0, 0.06);
+
+      .current-player {
+        color: #555;
+      }
+      .exit-btn {
+        background: rgba(0, 0, 0, 0.08);
+        color: #333;
+        &:hover {
+          background: rgba(0, 0, 0, 0.14);
+        }
+      }
+      .score-chip {
+        background: rgba(0, 0, 0, 0.06);
+        color: #333;
+      }
+    }
+  }
+
   .game-header {
     display: flex;
     align-items: center;
@@ -156,9 +189,19 @@
     cursor: default;
 
     .card-front {
-      border: 5px solid rgba(77, 213, 188, 1); // Border nur im matched Zustand
-      box-sizing: border-box; // Verhindert, dass die Karte durch den Border größer wird
+      border: 5px solid $theme-code;
+      box-sizing: border-box;
       opacity: 0.8;
+
+      .theme-gaming & {
+        border-color: $theme-gaming;
+      }
+      .theme-da & {
+        border-color: $theme-da;
+      }
+      .theme-food & {
+        border-color: $theme-food;
+      }
     }
 
     .card-back {

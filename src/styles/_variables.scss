@@ -11,9 +11,14 @@ $gray-muted: #555555;
 
 // Card themes
 $theme-code: #4ecdc4;
-$theme-gaming: #a855f7;
-$theme-da: #f59e0b;
-$theme-food: #ef4444;
+$theme-gaming: #e91e8c;
+$theme-da: #4a8db5;
+$theme-food: #f5832a;
+
+// Theme backgrounds
+$bg-gaming: #150d2e;
+$bg-da: #1b3a5c;
+$bg-food: #fdf6ee;
 
 // ========== Mixins ==========
 @mixin flex-center {

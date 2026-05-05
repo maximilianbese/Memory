@@ -4,29 +4,14 @@ import { THEMES } from "./themes";
 export function createCards(settings: GameSettings): CardData[] {
   const theme = THEMES[settings.theme];
   const pairCount = settings.boardSize / 2;
-  const symbols = theme.symbols.slice(0, pairCount);
   const images = theme.images?.slice(0, pairCount);
 
   const cards: CardData[] = [];
-  symbols.forEach((symbol, pairId) => {
+  Array.from({ length: pairCount }).forEach((_, pairId) => {
     const image = images?.[pairId];
     cards.push(
-      {
-        id: pairId * 2,
-        pairId,
-        symbol,
-        image,
-        isFlipped: false,
-        isMatched: false,
-      },
-      {
-        id: pairId * 2 + 1,
-        pairId,
-        symbol,
-        image,
-        isFlipped: false,
-        isMatched: false,
-      },
+      { id: pairId * 2, pairId, image, isFlipped: false, isMatched: false },
+      { id: pairId * 2 + 1, pairId, image, isFlipped: false, isMatched: false },
     );
   });
 

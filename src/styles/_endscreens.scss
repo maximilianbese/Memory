@@ -9,6 +9,17 @@
   background: $bg-dark;
   gap: 1.5rem;
 
+  .theme-gaming & {
+    background: $bg-gaming;
+  }
+  .theme-da & {
+    background: $bg-da;
+  }
+  .theme-food & {
+    background: $bg-food;
+    color: #1a1a1a;
+  }
+
   .gameover-title {
     font-family: "Bebas Neue", sans-serif;
     font-size: clamp(4rem, 12vw, 8rem);
@@ -18,12 +29,26 @@
       -2px -2px 0 rgba(255, 255, 255, 0.05);
     letter-spacing: 2px;
     line-height: 1;
+
+    .theme-gaming & {
+      color: $theme-gaming;
+    }
+    .theme-da & {
+      color: #e87d6a;
+    }
+    .theme-food & {
+      color: $theme-food;
+    }
   }
 
   .final-score-label {
     font-size: 0.95rem;
     color: $gray-light;
     font-weight: 600;
+
+    .theme-food & {
+      color: #888;
+    }
   }
 
   .final-scores {
@@ -32,6 +57,10 @@
     background: rgba(255, 255, 255, 0.06);
     border-radius: 10px;
     padding: 0.5rem 1rem;
+
+    .theme-food & {
+      background: rgba(0, 0, 0, 0.06);
+    }
 
     .score-chip {
       display: flex;
@@ -74,6 +103,17 @@
   position: relative;
   overflow: hidden;
 
+  .theme-gaming & {
+    background: $bg-gaming;
+  }
+  .theme-da & {
+    background: $bg-da;
+  }
+  .theme-food & {
+    background: $bg-food;
+    color: #1a1a1a;
+  }
+
   .confetti-area {
     position: absolute;
     top: 0;
@@ -86,8 +126,6 @@
     .confetti-piece {
       position: absolute;
       top: -10px;
-      width: 10px;
-      height: 14px;
       border-radius: 2px;
       animation: confettiFall var(--dur, 2s) ease-in var(--delay, 0s) forwards;
       transform: rotate(var(--rot, 0deg));
@@ -109,6 +147,10 @@
     font-size: 1.1rem;
     color: $gray-light;
     font-weight: 600;
+
+    .theme-food & {
+      color: #888;
+    }
   }
 
   .winner-name {
@@ -124,8 +166,6 @@
     }
   }
 
-  // ===== Winner Screen Bilder pro Theme =====
-
   .winner-icon {
     .bi-person-fill {
       display: inline-block;
@@ -139,7 +179,6 @@
         content: none !important;
       }
 
-      // --- DEFAULT / CODE THEME ---
       .theme-code & {
         &.blue {
           background-image: url("../assets/code-vibes-theme-img/blue-winner.svg");
@@ -148,8 +187,6 @@
           background-image: url("../assets/code-vibes-theme-img/orange-winner.svg");
         }
       }
-
-      // --- GAMING THEME ---
       .theme-gaming & {
         &.blue {
           background-image: url("../assets/gaming-theme-img/winner.svg");
@@ -158,8 +195,6 @@
           background-image: url("../assets/gaming-theme-img/winner.svg");
         }
       }
-
-      // --- DA THEME ---
       .theme-da & {
         &.blue {
           background-image: url("../assets/da-projects-theme-img/blue-winner.svg");
@@ -168,8 +203,6 @@
           background-image: url("../assets/da-projects-theme-img/orange-winner.svg");
         }
       }
-
-      // --- FOOD THEME ---
       .theme-food & {
         &.blue {
           background-image: url("../assets/foods-theme-img/blue-winner.svg");
@@ -194,6 +227,129 @@
 
     &:hover {
       background: rgba(255, 255, 255, 0.18);
+    }
+
+    .theme-food & {
+      background: rgba(0, 0, 0, 0.08);
+      color: #333;
+      &:hover {
+        background: rgba(0, 0, 0, 0.14);
+      }
+    }
+  }
+}
+
+// ===== Draw Screen =====
+.draw-screen {
+  @include flex-center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: $bg-dark;
+  gap: 0.5rem;
+
+  .theme-gaming & {
+    background: $bg-gaming;
+  }
+  .theme-da & {
+    background: $bg-da;
+  }
+  .theme-food & {
+    background: $bg-food;
+    color: #1a1a1a;
+  }
+
+  .draw-label {
+    font-size: 1.1rem;
+    color: $gray-light;
+    font-weight: 600;
+    font-style: italic;
+
+    .theme-food & {
+      color: #888;
+    }
+  }
+
+  .draw-title {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: clamp(3rem, 10vw, 7rem);
+    letter-spacing: 4px;
+    line-height: 1;
+    color: $accent-teal;
+    text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.25);
+
+    .theme-gaming & {
+      color: $theme-gaming;
+    }
+    .theme-da & {
+      color: #e87d6a;
+    }
+    .theme-food & {
+      color: $theme-food;
+      font-family: "Klee One", cursive;
+      text-shadow: none;
+    }
+  }
+
+  .draw-icon {
+    margin: 1rem 0 0.5rem;
+
+    // Food theme: card-style box around icon
+    .theme-food & {
+      background: rgba($theme-food, 0.12);
+      border-radius: 12px;
+      padding: 1.2rem;
+    }
+  }
+
+  .draw-img {
+    width: 160px;
+    height: 160px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .back-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: $white;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 0.7rem 1.8rem;
+    border-radius: 8px;
+    margin-top: 0.8rem;
+    transition: background 0.2s;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    // Gaming: outlined pill button
+    .theme-gaming & {
+      border: 1.5px solid rgba(255, 255, 255, 0.3);
+      border-radius: 24px;
+      &:hover {
+        background: rgba(255, 255, 255, 0.14);
+      }
+    }
+
+    // DA: subtle light button
+    .theme-da & {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+    }
+
+    // Food: orange filled button
+    .theme-food & {
+      background: $theme-food;
+      color: $white;
+      border-radius: 10px;
+      &:hover {
+        background: darken($theme-food, 8%);
+      }
     }
   }
 }
