@@ -11,13 +11,12 @@
 
   .start-bg-icon {
     position: absolute;
-    bottom: 20px;
-    left: -40px;
+    bottom: -50px;
+    left: 0px;
     font-size: 414px;
     color: rgba(255, 255, 255, 0.04);
     pointer-events: none;
     line-height: 1;
-    transform: rotate(37.5deg);
   }
 
   .start-content {
@@ -48,6 +47,9 @@
 
   .play-btn {
     @include flex-center;
+    display: flex;
+    margin: 0 auto;
+
     width: 250px;
     height: 98px;
     gap: 0.6rem;
@@ -56,22 +58,37 @@
     font-weight: 800;
     font-size: 40px;
     padding: 0.85rem 2.2rem;
+    border: none;
+    cursor: pointer;
+
     transition:
       transform 0.15s ease,
       box-shadow 0.15s ease;
     @include card-shadow;
 
+    // Das Bild oder Icon im Button
+    img,
     i {
       font-size: 1.3rem;
+      width: 44px; // Falls es ein Bild ist, die Größe fixieren
+      height: 32px;
+      display: inline-block; // Wichtig für die Rotation
+      transition: transform 0.3s ease-in-out;
     }
 
     &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 40px rgba(212, 232, 74, 0.3);
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(212, 232, 74, 0.4);
+
+      // Drehung um exakt 45 Grad
+      img,
+      i {
+        transform: rotate(-45deg);
+      }
     }
 
     &:active {
-      transform: translateY(0);
+      transform: translateY(-2px);
     }
   }
 }

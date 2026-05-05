@@ -4,7 +4,7 @@ import { THEMES } from "./themes";
 export function renderStartScreen(): string {
   return `
     <div class="start-screen screen active">
-      <span class="start-bg-icon bi bi-controller"></span>
+      <span class="start-bg-icon "><img src="./src/assets/big-controller.svg" alt="Play"></img></span>
       <div class="start-content">
         <p class="start-subtitle">It's play time.</p>
         <h1>Ready to play?</h1>
