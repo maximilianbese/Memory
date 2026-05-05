@@ -9,7 +9,7 @@ export function renderStartScreen(): string {
         <p class="start-subtitle">It's play time.</p>
         <h1>Ready to play?</h1>
         <button class="play-btn" id="btn-play">
-          <i class="bi bi-controller"></i>
+          <img src="./src/assets/little-controller.svg" alt="Play"></img>
           <span>Play</span>
           <span>→</span>
         </button>

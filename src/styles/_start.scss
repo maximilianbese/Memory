@@ -11,28 +11,34 @@
 
   .start-bg-icon {
     position: absolute;
-    bottom: -20px;
-    left: -20px;
-    font-size: 220px;
+    bottom: 20px;
+    left: -40px;
+    font-size: 414px;
     color: rgba(255, 255, 255, 0.04);
     pointer-events: none;
     line-height: 1;
+    transform: rotate(37.5deg);
   }
 
   .start-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     position: relative;
     z-index: 1;
 
     .start-subtitle {
-      font-size: 1.1rem;
+      display: flex;
+      justify-content: flex-start;
+      font-size: 48px;
       color: $gray-light;
-      font-weight: 600;
+      font-weight: 400;
       margin-bottom: 0.5rem;
     }
 
     h1 {
       font-family: "Bebas Neue", sans-serif;
-      font-size: clamp(3rem, 8vw, 6rem);
+      font-size: 140px;
       color: $white;
       line-height: 1;
       letter-spacing: 2px;
@@ -42,13 +48,14 @@
 
   .play-btn {
     @include flex-center;
+    width: 250px;
+    height: 98px;
     gap: 0.6rem;
     background: $accent-yellow;
     color: #1a1a1a;
     font-weight: 800;
-    font-size: 1.15rem;
+    font-size: 40px;
     padding: 0.85rem 2.2rem;
-    border-radius: 8px;
     transition:
       transform 0.15s ease,
       box-shadow 0.15s ease;
