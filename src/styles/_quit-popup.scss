@@ -1,0 +1,169 @@
+@use "variables" as *;
+// ===== Quit Popup =====
+.quit-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(2px);
+}
+
+.quit-popup {
+  background: #fff;
+  border-radius: 18px;
+  padding: 2.5rem 2.5rem 2rem;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: popupIn 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  .quit-question {
+    font-size: 1.55rem;
+    font-weight: 800;
+    line-height: 1.25;
+    margin-bottom: 2rem;
+  }
+
+  .quit-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .quit-btn {
+    flex: 1;
+    padding: 0.75rem 1.25rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: "Nunito", sans-serif;
+    cursor: pointer;
+    transition:
+      opacity 0.15s,
+      transform 0.15s;
+    &:hover {
+      opacity: 0.85;
+      transform: scale(1.02);
+    }
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  // ---- Code Vibes theme (teal, clean) ----
+  &.theme-code {
+    background: #fff;
+    border-radius: 6px;
+
+    .quit-question {
+      color: #222;
+      font-family: "Nunito", sans-serif;
+    }
+
+    .quit-btn--back {
+      background: #4ecdc4;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+    }
+    .quit-btn--exit {
+      background: #fff;
+      color: #4ecdc4;
+      border: 2px solid #4ecdc4;
+      border-radius: 4px;
+    }
+  }
+
+  // ---- Gaming theme (pink/magenta, rounded) ----
+  &.theme-gaming {
+    background: #e8eaf0;
+    border-radius: 18px;
+
+    .quit-question {
+      color: #1e3a4f;
+      font-family: "Nunito", sans-serif;
+    }
+
+    .quit-btn--back {
+      background: #e91e8c;
+      color: #fff;
+      border: none;
+      border-radius: 28px;
+    }
+    .quit-btn--exit {
+      background: #fff;
+      color: #e91e8c;
+      border: 2px solid #e91e8c;
+      border-radius: 28px;
+    }
+  }
+
+  // ---- DA Projects theme (blue-grey, soft rounded) ----
+  &.theme-da {
+    background: #dde3ec;
+    border-radius: 16px;
+
+    .quit-question {
+      color: #1e3a4f;
+      font-family: "Nunito", sans-serif;
+    }
+
+    .quit-btn--back {
+      background: #b0c8d8;
+      color: #1e3a4f;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+    }
+    .quit-btn--exit {
+      background: #e87d6a;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+    }
+  }
+
+  // ---- Food theme (orange/warm, bubbly) ----
+  &.theme-food {
+    background: #dde3ec;
+    border-radius: 18px;
+
+    .quit-question {
+      color: #d46a00;
+      font-family: "Nunito", sans-serif;
+      font-style: normal;
+    }
+
+    .quit-btn--back {
+      background: #f5a623;
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .quit-btn--exit {
+      background: #fff;
+      color: #f5a623;
+      border: 2px solid #f5a623;
+      border-radius: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+  }
+}
+
+@keyframes popupIn {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

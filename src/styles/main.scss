@@ -1,16 +1,10 @@
-@use "variables";
-@use "start";
-@use "settings";
-@use "game";
-@use "endscreens";
-
-// Screen transitions
-.screen {
-  display: none;
-  width: 100%;
-  height: 100%;
-
-  &.active {
-    display: flex;
-  }
-}
+@use "./variables";
+@use "./start";
+@use "./settings-screen";
+@use "./settings-layout";
+@use "./settings-bar";
+@use "./game-screen";
+@use "./card";
+@use "./preview";
+@use "./quit-popup";
+@use "./endscreens";

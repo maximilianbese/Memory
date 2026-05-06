@@ -1,0 +1,164 @@
+@use "variables" as *;
+// ===== Card =====
+.memory-card {
+  aspect-ratio: 1;
+  perspective: 600px;
+  cursor: pointer;
+  position: relative;
+
+  // Größen-Varianten
+  &.size-16 {
+    width: clamp(60px, 14vw, 110px);
+  }
+  &.size-24 {
+    width: clamp(50px, 11vw, 90px);
+  }
+  &.size-36 {
+    width: clamp(42px, 9vw, 80px);
+  }
+
+  .card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 10px;
+  }
+
+  // --- Zustände: Flip & Match ---
+
+  // 1. Wenn umgedreht ODER passend: Rotieren und Hintergrund transparent
+  &.flipped .card-inner,
+  &.matched .card-inner {
+    transform: rotateY(180deg);
+  }
+
+  &.flipped,
+  &.matched {
+    .card-front {
+      background: transparent !important; // Hintergrund wird beim Umdrehen sofort transparent
+    }
+  }
+
+  // 2. Nur wenn die Karten zusammenpassen: Border anzeigen
+  &.matched {
+    cursor: default;
+
+    .card-front {
+      border: 5px solid $theme-code;
+      box-sizing: border-box;
+      opacity: 0.8;
+
+      .theme-gaming & {
+        border-color: $theme-gaming;
+      }
+      .theme-da & {
+        border-color: $theme-da;
+      }
+      .theme-food & {
+        border-color: $theme-food;
+      }
+    }
+
+    .card-back {
+      display: none; // Rückseite entfernen, um saubere Transparenz zu garantieren
+    }
+  }
+
+  // --- Basis-Styles Front & Back ---
+
+  .card-back,
+  .card-front {
+    position: absolute;
+    inset: 0;
+    border-radius: 10px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    @include flex-center;
+    overflow: hidden;
+  }
+
+  // ---- Rückseite (Default Look) ----
+  .card-back {
+    background-color: #333; // Oder deine gewünschte Standardfarbe
+
+    i {
+      font-size: 1.4rem;
+      color: rgba(255, 255, 255, 0.35);
+    }
+
+    .card-back-logo {
+      width: 55%;
+      height: 55%;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      opacity: 0.55;
+      pointer-events: none;
+    }
+
+    // Größenanpassungen Rückseite
+    &.size-16 {
+      i {
+        font-size: 1.6rem;
+      }
+      .card-back-logo {
+        width: 60%;
+        height: 60%;
+      }
+    }
+    &.size-36 {
+      i {
+        font-size: 1rem;
+      }
+      .card-back-logo {
+        width: 48%;
+        height: 48%;
+      }
+    }
+  }
+
+  // ---- Vorderseite (Das Bild/Symbol) ----
+  .card-front {
+    transform: rotateY(180deg);
+    background-color: #eee; // Farbe vor dem Umdrehen (wird durch .flipped transparent)
+
+    .card-front-img {
+      width: 72%;
+      height: 72%;
+      object-fit: contain;
+      pointer-events: none;
+      border-radius: 4px;
+    }
+
+    .card-symbol {
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    // Größenanpassungen Vorderseite
+    &.size-16 {
+      .card-front-img {
+        width: 76%;
+        height: 76%;
+      }
+      .card-symbol {
+        font-size: 2.4rem;
+      }
+    }
+    &.size-36 {
+      .card-front-img {
+        width: 66%;
+        height: 66%;
+      }
+      .card-symbol {
+        font-size: 1.6rem;
+      }
+    }
+  }
+
+  // Hover-Effekt (nur auf klickbare Karten)
+  &:hover:not(.flipped):not(.matched) .card-inner {
+    transform: scale(1.04);
+  }
+}

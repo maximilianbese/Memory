@@ -1,0 +1,143 @@
+@use "variables" as *;
+
+.game-screen {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: $bg-dark;
+
+  // Theme-spezifische Hintergründe
+  .theme-gaming & {
+    background: $bg-gaming;
+    color: $white;
+  }
+  .theme-da & {
+    background: $bg-da;
+    color: $white;
+  }
+  .theme-food & {
+    background: $bg-food;
+    color: #1a1a1a;
+
+    .game-header {
+      background: rgba(0, 0, 0, 0.06);
+
+      .current-player {
+        color: #555;
+      }
+      .exit-btn {
+        background: rgba(0, 0, 0, 0.08);
+        color: #333;
+        &:hover {
+          background: rgba(0, 0, 0, 0.14);
+        }
+      }
+      .score-chip {
+        background: rgba(0, 0, 0, 0.06);
+        color: #333;
+      }
+    }
+  }
+
+  .game-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1.5rem;
+    background: rgba(0, 0, 0, 0.2);
+
+    .scores {
+      display: flex;
+      gap: 0.5rem;
+
+      .score-chip {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.35rem 0.8rem;
+        border-radius: 6px;
+        font-weight: 800;
+        font-size: 0.9rem;
+        background: rgba(255, 255, 255, 0.08);
+
+        .dot {
+          width: 10px;
+          height: 10px;
+          border-radius: 3px;
+          flex-shrink: 0;
+          &.blue {
+            background: $blue;
+          }
+          &.orange {
+            background: $orange;
+          }
+        }
+
+        &.active-blue {
+          background: rgba($blue, 0.15);
+        }
+        &.active-orange {
+          background: rgba($orange, 0.15);
+        }
+      }
+    }
+
+    .current-player {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: $gray-light;
+
+      .player-dot {
+        width: 16px;
+        height: 16px;
+        border-radius: 4px;
+        &.blue {
+          background: $blue;
+        }
+        &.orange {
+          background: $orange;
+        }
+      }
+    }
+
+    .exit-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.08);
+      color: $white;
+      padding: 0.4rem 1rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      transition: background 0.2s;
+      &:hover {
+        background: rgba(255, 255, 255, 0.14);
+      }
+    }
+  }
+
+  .board-wrapper {
+    flex: 1;
+    @include flex-center;
+    padding: 1rem;
+  }
+
+  .board {
+    display: grid;
+    gap: 6px;
+    &.size-16 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    &.size-24 {
+      grid-template-columns: repeat(6, 1fr);
+    }
+    &.size-36 {
+      grid-template-columns: repeat(6, 1fr);
+    }
+  }
+}

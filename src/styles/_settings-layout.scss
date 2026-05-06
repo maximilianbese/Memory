@@ -1,0 +1,251 @@
+@use "variables" as *;
+// ===== RIGHT SIDE =====
+.settings-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1.5rem;
+  padding-top: 3.5rem;
+}
+
+// ===== THEME PREVIEW BOX =====
+.theme-preview {
+  width: 460px;
+  height: 412px;
+  border-radius: 16px;
+  @include card-shadow;
+  overflow: hidden;
+  position: relative;
+  transition: background 0.3s ease;
+
+  // --- Code Vibes ---
+  &.preview-code {
+    background: #2e2e2e;
+
+    .preview-header {
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    .preview-mini-board {
+      .mini-card {
+        background: $theme-code;
+      }
+    }
+
+    .preview-card-showcase {
+      .showcase-card-back {
+        background: $theme-code;
+      }
+      .showcase-card-front {
+        background: $theme-code;
+      }
+    }
+  }
+
+  // --- Gaming ---
+  &.preview-gaming {
+    background: #150d2e;
+
+    .preview-header {
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    .preview-mini-board {
+      .mini-card {
+        background: #e91e8c;
+      }
+    }
+
+    .preview-card-showcase {
+      .showcase-card-back {
+        background: #e91e8c;
+      }
+      .showcase-card-front {
+        background: #e91e8c;
+      }
+    }
+  }
+
+  // --- DA Projects ---
+  &.preview-da {
+    background: #1b3a5c;
+
+    .preview-header {
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .preview-mini-board {
+      .mini-card {
+        background: #4a8db5;
+      }
+    }
+
+    .preview-card-showcase {
+      .showcase-card-back {
+        background: #4a8db5;
+      }
+      .showcase-card-front {
+        background: #4a8db5;
+      }
+    }
+  }
+
+  // --- Food ---
+  &.preview-food {
+    background: #fff8f0;
+
+    .preview-header {
+      background: rgba(0, 0, 0, 0.06);
+      .preview-exit {
+        color: #555;
+        background: rgba(0, 0, 0, 0.08);
+      }
+      .score-chip {
+        &.blue {
+          background: $blue;
+        }
+        &.orange {
+          background: $orange;
+        }
+      }
+    }
+
+    .preview-mini-board {
+      .mini-card {
+        background: $theme-food;
+      }
+    }
+
+    .preview-card-showcase {
+      .showcase-card-back {
+        background: $theme-food;
+      }
+      .showcase-card-front {
+        background: $theme-food;
+      }
+    }
+  }
+
+  // ---- Shared header ----
+  .preview-header {
+    padding: 0.45rem 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .preview-scores {
+      display: flex;
+      gap: 0.4rem;
+
+      .score-chip {
+        font-size: 0.6rem;
+        padding: 0.15rem 0.45rem;
+        border-radius: 4px;
+        font-weight: 700;
+        color: white;
+
+        &.blue {
+          background: $blue;
+        }
+        &.orange {
+          background: $orange;
+        }
+      }
+    }
+
+    .preview-exit {
+      font-size: 0.58rem;
+      background: rgba(255, 255, 255, 0.12);
+      color: rgba(255, 255, 255, 0.85);
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+    }
+
+    .preview-current {
+      font-size: 0.58rem;
+      color: rgba(255, 255, 255, 0.7);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+
+      .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 2px;
+        background: $blue;
+      }
+    }
+  }
+
+  // ---- Mini card grid ----
+  .preview-mini-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3px;
+    padding: 0.4rem 0.5rem;
+
+    .mini-card {
+      height: 26px;
+      border-radius: 4px;
+      @include flex-center;
+
+      img {
+        width: 55%;
+        height: 55%;
+        object-fit: contain;
+        filter: brightness(0) invert(1);
+        opacity: 0.35;
+      }
+
+      i {
+        font-size: 0.55rem;
+        color: rgba(255, 255, 255, 0.3);
+      }
+    }
+  }
+
+  // ---- Showcase: 2 overlapping cards (original design) ----
+  .preview-card-showcase {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    width: 100px;
+    height: 70px;
+
+    .showcase-card-back,
+    .showcase-card-front {
+      position: absolute;
+      width: 70px;
+      height: 60px;
+      border-radius: 8px;
+      @include flex-center;
+
+      img {
+        width: 60%;
+        height: 60%;
+        object-fit: contain;
+      }
+
+      i {
+        font-size: 1.3rem;
+        color: rgba(255, 255, 255, 0.5);
+      }
+    }
+
+    .showcase-card-back {
+      left: 0;
+      top: 5px;
+      z-index: 1;
+      transform: rotate(-5deg);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    }
+
+    .showcase-card-front {
+      right: 0;
+      top: 0;
+      z-index: 2;
+      transform: rotate(6deg);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    }
+  }
+}

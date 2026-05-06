@@ -1,0 +1,71 @@
+@use "variables" as *;
+// ===== START BAR =====
+.start-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(246, 246, 246, 1);
+  border-radius: 10px;
+  padding: 0.55rem 1.5rem; // Padding erhöht für besseren Look
+  width: 650px;
+  height: 81px;
+
+  .bar-info {
+    font-size: 20px;
+    font-weight: 700;
+    color: #616161;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    min-width: 160px;
+    justify-content: center;
+
+    // Das Trennzeichen
+    &:not(:first-child)::before {
+      content: "/"; // Der Slash als Text
+      color: #f0ea6e; // Dein Gelb
+      font-size: 56px; // Größer als der Text
+      font-weight: 900; // Dünner für den eleganten Look
+      margin: 0 20px; // Erzeugt den Abstand links und rechts
+      display: inline-block; // Wichtig für Transformationen
+      transform: scaleY(1.2); // Macht den Strich länger
+    }
+  }
+
+  .start-game-btn {
+    background: #f0ea6e;
+    color: #1a1a1a;
+    font-weight: bold;
+    font-size: 20px;
+    border: none;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 54px;
+    width: 124px;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+}
+
+// Gaming/DA dark themes – angepasste Textfarben
+&.theme-gaming,
+&.theme-da {
+  .settings-title {
+    color: $white;
+  }
+  .section-label {
+    color: $white;
+  }
+  .radio-option {
+    color: rgba(255, 255, 255, 0.8);
+  }
+  .bar-info {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .start-bar {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}

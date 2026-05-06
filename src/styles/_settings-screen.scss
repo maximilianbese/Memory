@@ -1,0 +1,122 @@
+@use "variables" as *;
+
+.settings-screen {
+  @include flex-center;
+  width: 100%;
+  height: 100%;
+  background: #f0f0f0;
+  color: #1a1a1a;
+  padding: 2rem;
+  transition: background 0.35s ease;
+
+  // Theme-spezifische Screen-Hintergründe
+  &.theme-code {
+    background: #f0f0f0;
+  }
+  &.theme-gaming {
+    background: #1e1a2e;
+    color: $white;
+  }
+  &.theme-da {
+    background: #1b3a5c;
+    color: $white;
+  }
+  &.theme-food {
+    background: #fdf6ee;
+    color: #1a1a1a;
+  }
+
+  .settings-container {
+    display: flex;
+    gap: 4rem;
+    align-items: flex-start;
+    max-width: 900px;
+    width: 100%;
+  }
+
+  .settings-left {
+    flex: 1;
+  }
+
+  .settings-title {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 2.8rem;
+    margin-bottom: 0.2rem;
+    letter-spacing: 1px;
+
+    &::after {
+      content: "";
+      display: block;
+      width: 60px;
+      height: 3px;
+      background: $accent-yellow;
+      margin-top: 0.3rem;
+      border-radius: 2px;
+    }
+  }
+
+  .settings-section {
+    margin-top: 1.8rem;
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 800;
+      font-size: 1rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 600;
+      opacity: 0.75;
+      transition: opacity 0.2s;
+
+      &:hover {
+        opacity: 1;
+      }
+
+      input[type="radio"] {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 18px;
+        height: 18px;
+        border: 2px solid #aaa;
+        border-radius: 50%;
+        cursor: pointer;
+        position: relative;
+        flex-shrink: 0;
+        transition: border-color 0.2s;
+
+        &:checked {
+          border-color: $accent-yellow;
+          opacity: 1;
+
+          &::after {
+            content: "";
+            position: absolute;
+            inset: 3px;
+            background: $accent-yellow;
+            border-radius: 50%;
+          }
+        }
+      }
+
+      &:has(input:checked) {
+        opacity: 1;
+        font-weight: 800;
+      }
+    }
+  }
+}

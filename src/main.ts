@@ -5,15 +5,18 @@ import {
   renderStartScreen,
   renderSettingsScreen,
   renderGameScreen,
+} from "./ts/renderer";
+import {
   renderGameOverScreen,
   renderDrawScreen,
   renderWinnerScreen,
-  updateThemePreview,
-  updateScoreboard,
-} from "./ts/renderer";
+} from "./ts/end-screen-renderer";
+import { attachSettingsListeners, applyThemeFont } from "./ts/settings-handler";
+import { handleCardClick } from "./ts/game-logic";
 
 const app = document.getElementById("app")!;
 
+/** Central game state – reset at the start of every new game. */
 let state: GameState = {
   settings: { theme: "code", player: "blue", boardSize: 16 },
   cards: [],
@@ -23,101 +26,24 @@ let state: GameState = {
   isLocked: false,
 };
 
-// ===== Screen navigation =====
+/** Displays the start screen and registers the play button. */
 function showStart(): void {
   document.body.style.fontFamily = "'Nunito', sans-serif";
   app.innerHTML = renderStartScreen();
   document.getElementById("btn-play")?.addEventListener("click", showSettings);
 }
 
-const THEME_LABELS: Record<string, string> = {
-  code: "Code vibes theme",
-  gaming: "Gaming theme",
-  da: "DA Projects theme",
-  food: "Foods theme",
-};
-
-function updateBarInfo(): void {
-  const theme =
-    document.querySelector<HTMLInputElement>('input[name="theme"]:checked')
-      ?.value ?? "code";
-  const player =
-    document.querySelector<HTMLInputElement>('input[name="player"]:checked')
-      ?.value ?? "blue";
-  const size =
-    document.querySelector<HTMLInputElement>('input[name="boardSize"]:checked')
-      ?.value ?? "16";
-
-  const barTheme = document.getElementById("bar-theme");
-  const barPlayer = document.getElementById("bar-player");
-  const barSize = document.getElementById("bar-size");
-
-  if (barTheme) barTheme.textContent = THEME_LABELS[theme] ?? theme;
-  if (barPlayer)
-    barPlayer.textContent = player.charAt(0).toUpperCase() + player.slice(1);
-  if (barSize) barSize.textContent = `${size} cards`;
-}
-
+/** Displays the settings screen and registers all form listeners. */
 function showSettings(): void {
   app.innerHTML = renderSettingsScreen();
-
-  // Theme radio -> update preview + bar
-  document.querySelectorAll('input[name="theme"]').forEach((input) => {
-    input.addEventListener("change", (e) => {
-      const val = (e.target as HTMLInputElement).value;
-      updateThemePreview(val);
-      updateBarInfo();
-    });
-  });
-
-  // Player + boardSize -> update bar
-  document
-    .querySelectorAll('input[name="player"], input[name="boardSize"]')
-    .forEach((input) => {
-      input.addEventListener("change", () => updateBarInfo());
-    });
-
-  document.getElementById("btn-start")?.addEventListener("click", () => {
-    const themeEl = document.querySelector<HTMLInputElement>(
-      'input[name="theme"]:checked',
-    );
-    const playerEl = document.querySelector<HTMLInputElement>(
-      'input[name="player"]:checked',
-    );
-    const sizeEl = document.querySelector<HTMLInputElement>(
-      'input[name="boardSize"]:checked',
-    );
-
-    const settings: GameSettings = {
-      theme: (themeEl?.value ?? "code") as GameSettings["theme"],
-      player: (playerEl?.value ?? "blue") as Player,
-      boardSize: Number(sizeEl?.value ?? 16) as GameSettings["boardSize"],
-    };
-
-    startGame(settings);
-  });
+  attachSettingsListeners(startGame);
 }
 
-const THEME_FONTS: Record<string, string> = {
-  code: "'Red Rose', sans-serif",
-  gaming: "'Orbitron', sans-serif",
-  da: "'Figtree', sans-serif",
-  food: "'Klee One', cursive",
-};
-
-function applyThemeFont(theme: string): void {
-  document.body.style.fontFamily = THEME_FONTS[theme] ?? "'Nunito', sans-serif";
-
-  // Entferne alte Theme-Klassen und füge die aktuelle hinzu
-  document.body.classList.remove(
-    "theme-code",
-    "theme-gaming",
-    "theme-da",
-    "theme-food",
-  );
-  document.body.classList.add(`theme-${theme}`);
-}
-
+/**
+ * Initialises a new game state and switches to the game screen.
+ *
+ * @param settings - Settings chosen by the player
+ */
 function startGame(settings: GameSettings): void {
   state = {
     settings,
@@ -131,132 +57,55 @@ function startGame(settings: GameSettings): void {
   renderGame();
 }
 
+/** Renders the game screen and attaches all necessary listeners. */
 function renderGame(): void {
   app.innerHTML = renderGameScreen(state);
   attachCardListeners();
   attachExitListener();
 }
 
-function attachExitListener(): void {
-  const exitBtn = document.getElementById("btn-exit");
-  const overlay = document.getElementById("quit-overlay");
-  const popup = document.getElementById("quit-popup");
-  const backBtn = document.getElementById("btn-quit-back");
-  const confirmExitBtn = document.getElementById("btn-quit-exit");
-
-  // Apply theme class to popup
-  if (popup) {
-    popup.classList.remove(
-      "theme-code",
-      "theme-gaming",
-      "theme-da",
-      "theme-food",
-    );
-    popup.classList.add(`theme-${state.settings.theme}`);
-  }
-
-  exitBtn?.addEventListener("click", () => {
-    if (overlay) overlay.style.display = "flex";
-  });
-
-  backBtn?.addEventListener("click", () => {
+/**
+ * Registers listeners for the quit overlay (back, confirm, and backdrop click).
+ *
+ * @param overlay - The overlay element
+ */
+function attachQuitOverlayListeners(overlay: HTMLElement | null): void {
+  document.getElementById("btn-quit-back")?.addEventListener("click", () => {
     if (overlay) overlay.style.display = "none";
   });
-
-  // Close on overlay backdrop click
   overlay?.addEventListener("click", (e) => {
     if (e.target === overlay) overlay.style.display = "none";
   });
-
-  confirmExitBtn?.addEventListener("click", showStart);
+  document
+    .getElementById("btn-quit-exit")
+    ?.addEventListener("click", showStart);
 }
 
+/** Registers the exit button and quit overlay listeners. */
+function attachExitListener(): void {
+  const overlay = document.getElementById("quit-overlay");
+  document.getElementById("btn-exit")?.addEventListener("click", () => {
+    if (overlay) overlay.style.display = "flex";
+  });
+  attachQuitOverlayListeners(overlay);
+}
+
+/** Registers click listeners on all game cards. */
 function attachCardListeners(): void {
   document.querySelectorAll<HTMLElement>(".memory-card").forEach((el) => {
     el.addEventListener("click", () => {
-      const id = Number(el.dataset.id);
-      handleCardClick(id);
+      handleCardClick(state, Number(el.dataset.id), showGameOver);
     });
   });
 }
 
-function handleCardClick(id: number): void {
-  if (state.isLocked) return;
-
-  const card = state.cards.find((c) => c.id === id);
-  if (!card || card.isFlipped || card.isMatched) return;
-  if (state.flippedCards.includes(id)) return;
-
-  // Flip card in DOM
-  const el = document.querySelector<HTMLElement>(
-    `.memory-card[data-id="${id}"]`,
-  );
-  el?.classList.add("flipped");
-  card.isFlipped = true;
-  state.flippedCards.push(id);
-
-  if (state.flippedCards.length === 2) {
-    state.isLocked = true;
-    checkMatch();
-  }
-}
-
-function checkMatch(): void {
-  const [id1, id2] = state.flippedCards;
-  const card1 = state.cards.find((c) => c.id === id1)!;
-  const card2 = state.cards.find((c) => c.id === id2)!;
-
-  if (card1.pairId === card2.pairId) {
-    // Match!
-    setTimeout(() => {
-      card1.isMatched = true;
-      card2.isMatched = true;
-      document
-        .querySelector(`.memory-card[data-id="${id1}"]`)
-        ?.classList.add("matched");
-      document
-        .querySelector(`.memory-card[data-id="${id2}"]`)
-        ?.classList.add("matched");
-
-      state.scores[state.currentPlayer]++;
-      state.flippedCards = [];
-      state.isLocked = false;
-
-      updateScoreboard(state);
-
-      if (state.cards.every((c) => c.isMatched)) {
-        setTimeout(() => showGameOver(), 600);
-      }
-    }, 500);
-  } else {
-    // No match - flip back
-    setTimeout(() => {
-      card1.isFlipped = false;
-      card2.isFlipped = false;
-      document
-        .querySelector(`.memory-card[data-id="${id1}"]`)
-        ?.classList.remove("flipped");
-      document
-        .querySelector(`.memory-card[data-id="${id2}"]`)
-        ?.classList.remove("flipped");
-
-      state.flippedCards = [];
-      state.isLocked = false;
-      switchPlayer();
-    }, 900);
-  }
-}
-
-function switchPlayer(): void {
-  state.currentPlayer = state.currentPlayer === "blue" ? "orange" : "blue";
-  updateScoreboard(state);
-}
-
+/** Displays the game over screen and redirects to the winner screen after 2.2 s. */
 function showGameOver(): void {
   app.innerHTML = renderGameOverScreen(state);
   setTimeout(() => showWinner(), 2200);
 }
 
+/** Displays the draw or winner screen depending on the score. */
 function showWinner(): void {
   if (state.scores.blue === state.scores.orange) {
     app.innerHTML = renderDrawScreen(state);
@@ -268,5 +117,5 @@ function showWinner(): void {
   document.getElementById("btn-back")?.addEventListener("click", showStart);
 }
 
-// ===== Init =====
+// ===== App entry point =====
 showStart();
