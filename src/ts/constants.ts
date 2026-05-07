@@ -16,10 +16,10 @@ export const THEME_FONTS: Record<string, string> = {
 
 /** Paths to the draw illustration per theme */
 export const DRAW_IMGS: Record<string, string> = {
-  code: "./src/assets/code-vibes-theme-img/draw.svg",
-  gaming: "./src/assets/gaming-theme-img/draw.svg",
-  da: "./src/assets/da-projects-theme-img/draw.svg",
-  food: "./src/assets/foods-theme-img/draw.svg",
+  code: "/cvt-draw.svg",
+  gaming: "/gaming-draw.svg",
+  da: "/da-projects-draw.svg",
+  food: "/food-draw.svg",
 };
 
 /** Colors used for the confetti animation on the winner screen */

@@ -5,7 +5,7 @@ import { THEME_OPTIONS } from "./constants";
 /** Renders the start screen as an HTML string. */
 function renderPlayButton(): string {
   return `<button class="play-btn" id="btn-play">
-          <img src="./src/assets/little-controller.svg" alt="Play">
+          <img src="/little-controller.svg" alt="Play">
           <span>Play</span><span>→</span>
         </button>`;
 }
@@ -14,7 +14,7 @@ function renderPlayButton(): string {
 export function renderStartScreen(): string {
   return `
     <div class="start-screen screen active">
-      <span class="start-bg-icon"><img src="./src/assets/big-controller.svg" alt="Play"></span>
+      <span class="start-bg-icon"><img src="/big-controller.svg" alt="Play"></span>
       <div class="start-content">
         <p class="start-subtitle">It's play time.</p>
         <h1>Ready to play?</h1>
@@ -39,7 +39,7 @@ function renderThemeRadios(): string {
 /** Renders the theme selection section. */
 function renderThemeSection(): string {
   return `<div class="settings-section">
-      <div class="section-label"><img src="./src/assets/settings/palette.svg"> Game themes</div>
+      <div class="section-label"><img src="/palette.svg"> Game themes</div>
       <div class="radio-group" id="theme-group">${renderThemeRadios()}</div>
     </div>`;
 }
@@ -47,7 +47,7 @@ function renderThemeSection(): string {
 /** Renders the player selection section. */
 function renderPlayerSection(): string {
   return `<div class="settings-section">
-      <div class="section-label"><img src="./src/assets/settings/chess_pawn.svg"> Choose player</div>
+      <div class="section-label"><img src="/chess_pawn.svg"> Choose player</div>
       <div class="radio-group">
         <label class="radio-option"><input type="radio" name="player" value="blue" checked> Blue</label>
         <label class="radio-option"><input type="radio" name="player" value="orange"> Orange</label>
@@ -58,7 +58,7 @@ function renderPlayerSection(): string {
 /** Renders the board size section. */
 function renderBoardSizeSection(): string {
   return `<div class="settings-section">
-      <div class="section-label"><img src="./src/assets/settings/board-size.svg"> Board size</div>
+      <div class="section-label"><img src="/board-size.svg"> Board size</div>
       <div class="radio-group">
         <label class="radio-option"><input type="radio" name="boardSize" value="16" checked> 16 cards</label>
         <label class="radio-option"><input type="radio" name="boardSize" value="24"> 24 cards</label>
