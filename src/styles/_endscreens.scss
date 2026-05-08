@@ -119,15 +119,15 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 120px;
+    height: 100%; // Von 120px auf 100% geändert
     pointer-events: none;
-    overflow: hidden;
+    overflow: hidden; // Verhindert Scrollbars während der Animation
 
     .confetti-piece {
       position: absolute;
-      top: -10px;
+      top: -20px; // Startet kurz über dem sichtbaren Bereich
       border-radius: 2px;
-      animation: confettiFall var(--dur, 2s) ease-in var(--delay, 0s) forwards;
+      animation: confettiFall var(--dur, 3s) ease-in var(--delay, 0s) forwards;
       transform: rotate(var(--rot, 0deg));
     }
   }
@@ -137,8 +137,9 @@
       transform: translateY(0) rotate(var(--rot, 0deg));
       opacity: 1;
     }
+    // Geändert von 150px auf 105vh, damit es sicher aus dem Sichtfeld fällt
     100% {
-      transform: translateY(150px) rotate(calc(var(--rot, 0deg) + 360deg));
+      transform: translateY(105vh) rotate(calc(var(--rot, 0deg) + 360deg));
       opacity: 0.3;
     }
   }
@@ -222,11 +223,22 @@
     padding: 0.7rem 1.8rem;
     border-radius: 8px;
     margin-top: 0.5rem;
-    transition: background 0.2s;
+    transition: all 0.2s ease;
     cursor: pointer;
+    border: none;
 
     &:hover {
       background: rgba(255, 255, 255, 0.18);
+    }
+
+    // DA-Theme Sichtbarkeit
+    .theme-da & {
+      background: #e87d6a; // Sichtbare Kontrastfarbe
+      color: $white;
+      &:hover {
+        background: lighten(#e87d6a, 8%);
+        transform: translateY(-2px);
+      }
     }
 
     .theme-food & {
@@ -317,8 +329,9 @@
     padding: 0.7rem 1.8rem;
     border-radius: 8px;
     margin-top: 0.8rem;
-    transition: background 0.2s;
+    transition: all 0.2s ease;
     cursor: pointer;
+    border: none;
 
     &:hover {
       background: rgba(255, 255, 255, 0.18);
@@ -333,12 +346,14 @@
       }
     }
 
-    // DA: subtle light button
+    // DA: Sichtbarer Button in korallenrot
     .theme-da & {
-      background: rgba(255, 255, 255, 0.12);
+      background: #e87d6a;
+      color: $white;
       border-radius: 10px;
       &:hover {
-        background: rgba(255, 255, 255, 0.2);
+        background: lighten(#e87d6a, 8%);
+        transform: translateY(-2px);
       }
     }
 
