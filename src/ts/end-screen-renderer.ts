@@ -2,9 +2,10 @@ import type { GameState, Player } from "./types";
 import { DRAW_IMGS, CONFETTI_COLORS } from "./constants";
 
 /**
- * Renders the game over screen with the final score.
+ * Renders the game-over transition screen showing the final score for both players.
  *
- * @param state - Game state at the time the game ended
+ * @param state - Game state at the moment the last pair was matched.
+ * @returns     HTML string for the game-over screen element.
  */
 export function renderGameOverScreen(state: GameState): string {
   return `
@@ -20,9 +21,10 @@ export function renderGameOverScreen(state: GameState): string {
 }
 
 /**
- * Renders the draw screen (tie game).
+ * Renders the draw screen displayed when both players have equal scores.
  *
- * @param state - Game state (used for the theme-specific image)
+ * @param state - Game state (used to pick the theme-specific draw illustration).
+ * @returns     HTML string for the draw screen element.
  */
 export function renderDrawScreen(state: GameState): string {
   return `
@@ -38,7 +40,12 @@ export function renderDrawScreen(state: GameState): string {
 }
 
 /**
- * Generates 30 randomly positioned confetti elements as an HTML string.
+ * Generates an HTML string of 30 randomly positioned confetti pieces.
+ *
+ * Each piece has a randomised horizontal position, colour, animation duration,
+ * delay, rotation angle, and dimensions.
+ *
+ * @returns HTML string containing all confetti `<div>` elements.
  */
 function renderConfetti(): string {
   return Array(30)
@@ -55,10 +62,11 @@ function renderConfetti(): string {
 }
 
 /**
- * Renders the winner screen with confetti animation.
+ * Renders the winner screen with a confetti animation celebrating the winning player.
  *
- * @param winner - Gewinnender Spieler (`"blue"` or `"orange"`)
- * @param _state - Game state (reserved for future extensions)
+ * @param winner - The player (`"blue"` or `"orange"`) who won the game.
+ * @param _state - Game state (reserved for future theme-aware extensions).
+ * @returns      HTML string for the winner screen element.
  */
 export function renderWinnerScreen(winner: Player, _state: GameState): string {
   return `
@@ -73,10 +81,12 @@ export function renderWinnerScreen(winner: Player, _state: GameState): string {
 }
 
 /**
- * Updates the score and active player indicator
- * directly in the DOM (without a full screen re-render).
+ * Updates the inner HTML and CSS class of a single score chip element.
  *
- * @param state - Current game state
+ * @param el            - The score chip DOM element to update.
+ * @param player        - The player this chip represents.
+ * @param score         - Current score for that player.
+ * @param currentPlayer - The player whose turn it is (used to apply the active class).
  */
 function updatePlayerChip(
   el: Element,
@@ -88,7 +98,12 @@ function updatePlayerChip(
   el.className = `score-chip ${currentPlayer === player ? `active-${player}` : ""}`;
 }
 
-/** Updates the score and active player indicator directly in the DOM. */
+/**
+ * Updates the scoreboard and the active-player indicator directly in the DOM
+ * without triggering a full screen re-render.
+ *
+ * @param state - Current game state providing updated scores and `currentPlayer`.
+ */
 export function updateScoreboard(state: GameState): void {
   const scores = document.querySelector(".scores");
   if (!scores) return;

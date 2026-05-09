@@ -1,4 +1,6 @@
-/** Human-readable label names for each theme (used in the settings info bar) */
+/**
+ * Human-readable label for each theme key, displayed in the settings info bar.
+ */
 export const THEME_LABELS: Record<string, string> = {
   code: "Code vibes theme",
   gaming: "Gaming theme",
@@ -6,7 +8,9 @@ export const THEME_LABELS: Record<string, string> = {
   food: "Foods theme",
 };
 
-/** CSS font stack per theme, applied to `document.body` */
+/**
+ * CSS font-family stack applied to `document.body` for each theme.
+ */
 export const THEME_FONTS: Record<string, string> = {
   code: "'Red Rose', sans-serif",
   gaming: "'Orbitron', sans-serif",
@@ -14,7 +18,9 @@ export const THEME_FONTS: Record<string, string> = {
   food: "'Klee One', cursive",
 };
 
-/** Paths to the draw illustration per theme */
+/**
+ * Path to the draw-result illustration for each theme.
+ */
 export const DRAW_IMGS: Record<string, string> = {
   code: "/cvt-draw.svg",
   gaming: "/gaming-draw.svg",
@@ -22,7 +28,9 @@ export const DRAW_IMGS: Record<string, string> = {
   food: "/food-draw.svg",
 };
 
-/** Colors used for the confetti animation on the winner screen */
+/**
+ * Colours used for the confetti animation on the winner screen.
+ */
 export const CONFETTI_COLORS = [
   "#e74c3c",
   "#f1c40f",
@@ -32,7 +40,9 @@ export const CONFETTI_COLORS = [
   "#e67e22",
 ];
 
-/** All theme options as [value, label] pairs for the settings form */
+/**
+ * All theme options as `[value, label]` pairs for the settings form.
+ */
 export const THEME_OPTIONS: [string, string][] = [
   ["code", "Code vibes theme"],
   ["gaming", "Gaming theme"],

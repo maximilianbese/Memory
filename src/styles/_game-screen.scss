@@ -7,7 +7,6 @@
   height: 100%;
   background: $bg-dark;
 
-  // Theme-spezifische Hintergründe
   .theme-gaming & {
     background: $bg-gaming;
     color: $white;
@@ -42,14 +41,27 @@
 
   .game-header {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     padding: 0.75rem 1.5rem;
     background: rgba(0, 0, 0, 0.2);
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    &-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1200px;
+      gap: 0.75rem;
+    }
 
     .scores {
       display: flex;
       gap: 0.5rem;
+      flex-shrink: 0;
 
       .score-chip {
         display: flex;
@@ -60,6 +72,7 @@
         font-weight: 800;
         font-size: 0.9rem;
         background: rgba(255, 255, 255, 0.08);
+        white-space: nowrap;
 
         .dot {
           width: 10px;
@@ -90,11 +103,15 @@
       font-weight: 700;
       font-size: 0.95rem;
       color: $gray-light;
+      white-space: nowrap;
+      overflow: hidden;
+      min-width: 0;
 
       .player-dot {
         width: 16px;
         height: 16px;
         border-radius: 4px;
+        flex-shrink: 0;
         &.blue {
           background: $blue;
         }
@@ -115,29 +132,33 @@
       font-weight: 700;
       font-size: 0.85rem;
       transition: background 0.2s;
+      white-space: nowrap;
+      flex-shrink: 0;
       &:hover {
         background: rgba(255, 255, 255, 0.14);
       }
     }
   }
+}
 
-  .board-wrapper {
-    flex: 1;
-    @include flex-center;
-    padding: 1rem;
+.board-wrapper {
+  flex: 1;
+  @include flex-center;
+  padding: 1rem;
+  overflow: auto;
+  min-height: 0;
+}
+
+.board {
+  display: grid;
+  gap: 6px;
+  &.size-16 {
+    grid-template-columns: repeat(4, 1fr);
   }
-
-  .board {
-    display: grid;
-    gap: 6px;
-    &.size-16 {
-      grid-template-columns: repeat(4, 1fr);
-    }
-    &.size-24 {
-      grid-template-columns: repeat(6, 1fr);
-    }
-    &.size-36 {
-      grid-template-columns: repeat(6, 1fr);
-    }
+  &.size-24 {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  &.size-36 {
+    grid-template-columns: repeat(6, 1fr);
   }
 }

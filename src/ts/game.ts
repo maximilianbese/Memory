@@ -2,11 +2,11 @@ import type { CardData, GameSettings } from "./types";
 import { THEMES } from "./themes";
 
 /**
- * Creates a complete, shuffled card set for the given settings.
- * Each image appears exactly twice (as a pair).
+ * Creates a pair of {@link CardData} objects that share the same `pairId`.
  *
- * @param settings - Current game settings (theme + board size)
- * @returns Shuffled array of `CardData` objects
+ * @param pairId - Shared identifier for both cards.
+ * @param image  - Optional path to the front-side image.
+ * @returns      Array of two cards forming a matching pair.
  */
 function buildPair(pairId: number, image?: string): CardData[] {
   return [
@@ -15,6 +15,15 @@ function buildPair(pairId: number, image?: string): CardData[] {
   ];
 }
 
+/**
+ * Creates a complete, shuffled card deck for the given game settings.
+ *
+ * The number of pairs equals `settings.boardSize / 2`. Each pair is assigned
+ * one front-side image from the active theme's image list.
+ *
+ * @param settings - Current game settings (theme + board size).
+ * @returns        Shuffled array of {@link CardData} objects.
+ */
 export function createCards(settings: GameSettings): CardData[] {
   const theme = THEMES[settings.theme];
   const pairCount = settings.boardSize / 2;
@@ -27,10 +36,12 @@ export function createCards(settings: GameSettings): CardData[] {
 }
 
 /**
- * Shuffles an array using the Fisher-Yates algorithm.
+ * Returns a new array with the same elements in a random order.
  *
- * @param arr - The array to shuffle (not mutated)
- * @returns New shuffled array
+ * Uses the Fisher-Yates algorithm. The original array is not mutated.
+ *
+ * @param arr - Source array.
+ * @returns   Shuffled copy of `arr`.
  */
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];

@@ -2,6 +2,14 @@ import type { GameSettings, Player } from "./types";
 import { THEME_LABELS, THEME_FONTS } from "./constants";
 import { THEMES } from "./themes";
 
+/**
+ * Cross-fades a preview image to a new source by briefly fading it out and
+ * back in, preventing a jarring hard swap.
+ *
+ * @param img - The `<img>` element to update.
+ * @param src - New image URL.
+ * @param alt - New alt text for the image.
+ */
 function fadePreviewImage(
   img: HTMLImageElement,
   src: string,
@@ -16,6 +24,15 @@ function fadePreviewImage(
   }, 150);
 }
 
+/**
+ * Updates the theme preview panel in the settings screen to reflect the
+ * currently hovered or selected theme.
+ *
+ * Fades the preview image when available and updates card colours and the
+ * theme label without re-rendering the entire panel.
+ *
+ * @param themeKey - Key of the theme to preview.
+ */
 export function updateThemePreview(themeKey: string): void {
   const preview = document.getElementById("theme-preview");
   if (!preview) return;
@@ -39,6 +56,12 @@ export function updateThemePreview(themeKey: string): void {
   });
 }
 
+/**
+ * Returns the currently selected value of a named radio button group,
+ * or `null` when no option is selected.
+ *
+ * @param name - The `name` attribute of the radio group.
+ */
 function getRadioValue(name: string): string | null {
   return (
     document.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`)
@@ -46,6 +69,10 @@ function getRadioValue(name: string): string | null {
   );
 }
 
+/**
+ * Reads the current radio selections and updates the three info labels in the
+ * settings start bar to reflect the chosen theme, player, and board size.
+ */
 export function updateBarInfo(): void {
   const theme = getRadioValue("theme");
   const player = getRadioValue("player");
@@ -66,6 +93,13 @@ export function updateBarInfo(): void {
   if (barSize) barSize.textContent = size ? `${size} cards` : "Select size";
 }
 
+/**
+ * Enables or disables the start button depending on whether all required
+ * settings (theme, player, board size) have been selected.
+ *
+ * Also updates the button's `title` attribute with a helpful hint listing
+ * the still-missing selections.
+ */
 function validateSettings(): void {
   const theme = getRadioValue("theme");
   const player = getRadioValue("player");
@@ -81,7 +115,6 @@ function validateSettings(): void {
     if (isValid) {
       startBtn.title = "Start game";
     } else {
-      // Hilfreicherer Text, was noch fehlt
       const missing = [];
       if (!player) missing.push("player");
       if (!size) missing.push("board size");
@@ -90,6 +123,14 @@ function validateSettings(): void {
   }
 }
 
+/**
+ * Reads the currently selected settings from the settings form DOM.
+ *
+ * Falls back to safe defaults (`code` / `blue` / `16`) when a group has no
+ * selection.
+ *
+ * @returns A {@link GameSettings} object reflecting the current form state.
+ */
 export function readSettingsFromDOM(): GameSettings {
   return {
     theme: (getRadioValue("theme") || "code") as GameSettings["theme"],
@@ -100,6 +141,10 @@ export function readSettingsFromDOM(): GameSettings {
   };
 }
 
+/**
+ * Attaches `change` listeners to all radio inputs and `mouseenter`/`mouseleave`
+ * listeners to theme labels so the preview panel updates on hover.
+ */
 function attachRadioListeners(): void {
   document.querySelectorAll('input[type="radio"]').forEach((input) => {
     input.addEventListener("change", (e) => {
@@ -126,12 +171,17 @@ function attachRadioListeners(): void {
     });
 }
 
+/**
+ * Attaches all event listeners required for the settings screen to function,
+ * then performs an initial validation pass to reflect the pre-selected theme.
+ *
+ * @param onStart - Callback invoked with the collected {@link GameSettings}
+ *                  when the player clicks the start button.
+ */
 export function attachSettingsListeners(
   onStart: (s: GameSettings) => void,
 ): void {
   attachRadioListeners();
-
-  // Initialer Check beim Laden der Seite
   validateSettings();
   updateBarInfo();
 
@@ -140,6 +190,14 @@ export function attachSettingsListeners(
   });
 }
 
+/**
+ * Applies the font family and theme body class for the given theme key.
+ *
+ * Removes all other `theme-*` classes from `document.body` before adding
+ * the new one, ensuring only one theme class is ever active at a time.
+ *
+ * @param theme - Key of the theme to activate.
+ */
 export function applyThemeFont(theme: string): void {
   document.body.style.fontFamily = THEME_FONTS[theme] ?? "'Nunito', sans-serif";
   document.body.classList.remove(

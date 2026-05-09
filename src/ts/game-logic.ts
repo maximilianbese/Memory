@@ -2,17 +2,20 @@ import type { GameState } from "./types";
 import { updateScoreboard } from "./end-screen-renderer";
 
 /**
- * Finds a card in the state by its ID.
+ * Returns the card with the given `id` from the state, or `undefined`.
+ *
+ * @param state - Current game state.
+ * @param id    - Card identifier.
  */
 function findCard(state: GameState, id: number) {
   return state.cards.find((c) => c.id === id);
 }
 
 /**
- * Sets the `flipped` CSS class of a card in the DOM.
+ * Adds or removes the `flipped` CSS class on a card element in the DOM.
  *
- * @param id - Card ID from `data-id`
- * @param flipped - `true` = flip up, `false` = flip back
+ * @param id      - Value of the card's `data-id` attribute.
+ * @param flipped - `true` to flip the card face-up, `false` to flip it back.
  */
 function setCardFlipInDOM(id: number, flipped: boolean): void {
   const el = document.querySelector<HTMLElement>(
@@ -23,9 +26,9 @@ function setCardFlipInDOM(id: number, flipped: boolean): void {
 }
 
 /**
- * Marks a card in the DOM as matched.
+ * Adds the `matched` CSS class to a card element in the DOM.
  *
- * @param id - Card ID from `data-id`
+ * @param id - Value of the card's `data-id` attribute.
  */
 function setCardMatchedInDOM(id: number): void {
   document
@@ -34,14 +37,15 @@ function setCardMatchedInDOM(id: number): void {
 }
 
 /**
- * Handles a successful match of two cards:
- * marks both as matched, increments the score,
- * and checks whether the game is over.
+ * Applies the result of a successful pair match to the game state and the DOM.
  *
- * @param state     - Current game state (mutated in place)
- * @param id1       - ID of the first flipped card
- * @param id2       - ID of the second flipped card
- * @param onGameOver - Callback invoked when all pairs have been found
+ * Both cards are marked as matched, the current player's score is incremented,
+ * the scoreboard is updated, and `onGameOver` is called when every card is matched.
+ *
+ * @param state      - Current game state (mutated in place).
+ * @param id1        - ID of the first matched card.
+ * @param id2        - ID of the second matched card.
+ * @param onGameOver - Callback invoked when all pairs have been found.
  */
 function applyMatch(
   state: GameState,
@@ -62,6 +66,15 @@ function applyMatch(
   if (state.cards.every((c) => c.isMatched)) setTimeout(onGameOver, 600);
 }
 
+/**
+ * Schedules {@link applyMatch} with a short delay to allow the flip animation
+ * to complete before locking the cards in the matched state.
+ *
+ * @param state      - Current game state.
+ * @param id1        - ID of the first matched card.
+ * @param id2        - ID of the second matched card.
+ * @param onGameOver - Callback invoked when all pairs have been found.
+ */
 function handleMatch(
   state: GameState,
   id1: number,
@@ -72,12 +85,12 @@ function handleMatch(
 }
 
 /**
- * Handles a failed comparison of two cards:
- * flips both back and switches the active player.
+ * Handles a failed comparison: flips both cards back after a delay and
+ * switches the active player.
  *
- * @param state - Current game state (mutated in place)
- * @param id1   - ID of the first flipped card
- * @param id2   - ID of the second flipped card
+ * @param state - Current game state (mutated in place).
+ * @param id1   - ID of the first non-matching card.
+ * @param id2   - ID of the second non-matching card.
  */
 function handleMismatch(state: GameState, id1: number, id2: number): void {
   setTimeout(() => {
@@ -95,11 +108,11 @@ function handleMismatch(state: GameState, id1: number, id2: number): void {
 }
 
 /**
- * Evaluates the two currently flipped cards
- * and delegates to `handleMatch` or `handleMismatch`.
+ * Evaluates the two currently face-up cards and delegates to
+ * {@link handleMatch} or {@link handleMismatch}.
  *
- * @param state      - Current game state
- * @param onGameOver - Callback for game over
+ * @param state      - Current game state.
+ * @param onGameOver - Callback invoked when all pairs have been found.
  */
 export function checkMatch(state: GameState, onGameOver: () => void): void {
   const [id1, id2] = state.flippedCards;
@@ -113,13 +126,13 @@ export function checkMatch(state: GameState, onGameOver: () => void): void {
 }
 
 /**
- * Handles a click on a card:
- * ignores invalid clicks, flips the card,
- * and triggers the match check when two cards are flipped.
+ * Returns `true` when the card can be flipped by the player.
  *
- * @param state      - Current game state (mutated in place)
- * @param id         - ID of the clicked card
- * @param onGameOver - Callback for game over
+ * A card is not clickable when the board is locked, the card is already
+ * face-up, already matched, or already in the `flippedCards` queue.
+ *
+ * @param state - Current game state.
+ * @param id    - ID of the card to test.
  */
 function isCardClickable(state: GameState, id: number): boolean {
   const card = findCard(state, id);
@@ -132,6 +145,16 @@ function isCardClickable(state: GameState, id: number): boolean {
   );
 }
 
+/**
+ * Processes a card-click event.
+ *
+ * Ignores the click when the card is not clickable; otherwise flips the card
+ * and triggers {@link checkMatch} once two cards are face-up.
+ *
+ * @param state      - Current game state (mutated in place).
+ * @param id         - ID of the clicked card.
+ * @param onGameOver - Callback invoked when all pairs have been found.
+ */
 export function handleCardClick(
   state: GameState,
   id: number,

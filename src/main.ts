@@ -14,9 +14,13 @@ import {
 import { attachSettingsListeners, applyThemeFont } from "./ts/settings-handler";
 import { handleCardClick } from "./ts/game-logic";
 
+/** Root element that hosts all screen content. */
 const app = document.getElementById("app")!;
 
-/** Central game state – reset at the start of every new game. */
+/**
+ * Central game state. Reset at the beginning of every new game via
+ * {@link startGame}.
+ */
 let state: GameState = {
   settings: { theme: "code", player: "blue", boardSize: 16 },
   cards: [],
@@ -26,23 +30,28 @@ let state: GameState = {
   isLocked: false,
 };
 
-/** Displays the start screen and registers the play button. */
+/**
+ * Displays the start screen and registers the play button listener.
+ */
 function showStart(): void {
   document.body.style.fontFamily = "'Nunito', sans-serif";
   app.innerHTML = renderStartScreen();
   document.getElementById("btn-play")?.addEventListener("click", showSettings);
 }
 
-/** Displays the settings screen and registers all form listeners. */
+/**
+ * Displays the settings screen and attaches all form listeners.
+ */
 function showSettings(): void {
   app.innerHTML = renderSettingsScreen();
   attachSettingsListeners(startGame);
 }
 
 /**
- * Initialises a new game state and switches to the game screen.
+ * Initialises a new game state from the given settings and switches to the
+ * game screen.
  *
- * @param settings - Settings chosen by the player
+ * @param settings - Settings collected from the settings form.
  */
 function startGame(settings: GameSettings): void {
   state = {
@@ -57,7 +66,9 @@ function startGame(settings: GameSettings): void {
   renderGame();
 }
 
-/** Renders the game screen and attaches all necessary listeners. */
+/**
+ * Renders the game screen into `#app` and attaches all in-game listeners.
+ */
 function renderGame(): void {
   app.innerHTML = renderGameScreen(state);
   attachCardListeners();
@@ -65,9 +76,10 @@ function renderGame(): void {
 }
 
 /**
- * Registers listeners for the quit overlay (back, confirm, and backdrop click).
+ * Registers the back-to-game, backdrop-click, and confirm-exit listeners
+ * for the quit overlay.
  *
- * @param overlay - The overlay element
+ * @param overlay - The quit overlay element, or `null` when absent from the DOM.
  */
 function attachQuitOverlayListeners(overlay: HTMLElement | null): void {
   document.getElementById("btn-quit-back")?.addEventListener("click", () => {
@@ -81,7 +93,10 @@ function attachQuitOverlayListeners(overlay: HTMLElement | null): void {
     ?.addEventListener("click", showStart);
 }
 
-/** Registers the exit button and quit overlay listeners. */
+/**
+ * Registers the exit button listener and delegates overlay interaction to
+ * {@link attachQuitOverlayListeners}.
+ */
 function attachExitListener(): void {
   const overlay = document.getElementById("quit-overlay");
   document.getElementById("btn-exit")?.addEventListener("click", () => {
@@ -90,7 +105,10 @@ function attachExitListener(): void {
   attachQuitOverlayListeners(overlay);
 }
 
-/** Registers click listeners on all game cards. */
+/**
+ * Registers a `click` listener on every `.memory-card` element that forwards
+ * the event to {@link handleCardClick}.
+ */
 function attachCardListeners(): void {
   document.querySelectorAll<HTMLElement>(".memory-card").forEach((el) => {
     el.addEventListener("click", () => {
@@ -99,13 +117,19 @@ function attachCardListeners(): void {
   });
 }
 
-/** Displays the game over screen and redirects to the winner screen after 2.2 s. */
+/**
+ * Displays the game-over screen and automatically transitions to the winner
+ * or draw screen after 2.2 seconds.
+ */
 function showGameOver(): void {
   app.innerHTML = renderGameOverScreen(state);
   setTimeout(() => showWinner(), 2200);
 }
 
-/** Displays the draw or winner screen depending on the score. */
+/**
+ * Determines the outcome (winner or draw) and renders the appropriate
+ * end screen. Registers the "Back to start" button listener.
+ */
 function showWinner(): void {
   if (state.scores.blue === state.scores.orange) {
     app.innerHTML = renderDrawScreen(state);
@@ -117,5 +141,4 @@ function showWinner(): void {
   document.getElementById("btn-back")?.addEventListener("click", showStart);
 }
 
-// ===== App entry point =====
 showStart();

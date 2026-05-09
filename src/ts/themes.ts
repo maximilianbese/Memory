@@ -1,11 +1,16 @@
 import type { ThemeConfig, GameTheme } from "./types";
 
+/**
+ * Registry of all available themes, keyed by {@link GameTheme}.
+ *
+ * Each entry provides the colour, icons, card images, and preview assets
+ * for one visual theme of the game.
+ */
 export const THEMES: Record<GameTheme, ThemeConfig> = {
   code: {
     name: "Code Vibes",
     color: "#4ecdc4",
     backIcon: "bi-display-code",
-    // Logo auf der Rückseite – leg die Datei unter public/logos/code-logo.png ab
     backLogo: "/card-back-logo.svg",
     previewImage: "/coding-vibes-settings-preview.svg",
     images: [
@@ -56,7 +61,6 @@ export const THEMES: Record<GameTheme, ThemeConfig> = {
       "/play-button-card.svg",
     ],
   },
-
   da: {
     name: "DA Projects",
     color: "#4a8db5",
