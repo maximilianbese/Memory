@@ -1,81 +1,45 @@
-# Memory# Memory App – Bilder einbinden
+# Memory
 
-## Ordnerstruktur für Bilder
+Browserbasiertes Zwei-Spieler-Memorygame mit mehreren Themes und konfigurierbarer Brettgröße. Gebaut mit **TypeScript**, **SCSS** und **Vite**.
 
-Alle Bilder liegen im `public/`-Ordner und werden von Vite automatisch ins Build kopiert.
+## Features
 
-```
-public/
-├── logos/
-│   ├── code-logo.png       ← Logo auf der Kartenrückseite (Code Vibes Theme)
-│   ├── gaming-logo.png     ← Logo auf der Kartenrückseite (Gaming Theme)
-│   ├── da-logo.png         ← Logo auf der Kartenrückseite (DA Projects Theme)
-│   └── food-logo.png       ← Logo auf der Kartenrückseite (Foods Theme)
-│
-└── images/
-    ├── code/
-    │   ├── react.png
-    │   ├── python.png
-    │   ├── rust.png
-    │   ├── docker.png
-    │   ├── git.png
-    │   ├── nodejs.png
-    │   ├── typescript.png
-    │   ├── linux.png
-    │   ├── vscode.png
-    │   ├── github.png
-    │   ├── webpack.png
-    │   ├── graphql.png
-    │   ├── aws.png
-    │   ├── vue.png
-    │   ├── angular.png
-    │   ├── mongodb.png
-    │   ├── redis.png
-    │   └── tailwind.png
-    │
-    ├── gaming/
-    │   ├── mario.png
-    │   ├── zelda.png
-    │   └── ... (18 Bilder gesamt)
-    │
-    ├── da/
-    │   ├── chart-bar.png
-    │   └── ... (18 Bilder gesamt)
-    │
-    └── food/
-        ├── pizza.png
-        └── ... (18 Bilder gesamt)
-```
+- 4 Themes: Code Vibes, Gaming, DA Projects, Foods
+- 3 Brettgrößen: 16, 24 oder 36 Karten
+- Zwei-Spieler-Modus mit animiertem Kartenumdrehen und Konfetti-Siegesanimation
 
-## Bildgrößen (empfohlen)
+## Voraussetzungen
 
-| Verwendung       | Empfohlene Größe | Format                          |
-| ---------------- | ---------------- | ------------------------------- |
-| Kartenbilder     | 200×200 px       | PNG (transparenter Hintergrund) |
-| Logo (Rückseite) | 200×200 px       | PNG (transparenter Hintergrund) |
+- [Node.js](https://nodejs.org/) 18 oder neuer
 
-## Fallback
-
-Wenn ein Bild **nicht gefunden** wird (404), zeigt die App automatisch:
-
-- **Rückseite:** das Bootstrap-Icon des Themes
-- **Vorderseite:** das Emoji des jeweiligen Paares
-
-Du kannst also das Spiel auch ohne Bilder starten – die Emojis funktionieren als vollständiger Fallback.
-
-## Eigene Bilder/Themes anpassen
-
-In `src/ts/themes.ts` kannst du für jedes Theme:
-
-- `backLogo` → Pfad zum Rückseiten-Logo ändern
-- `images[]` → Pfade zu den 18 Kartenbildern anpassen
-- `symbols[]` → Emoji-Fallbacks anpassen
-- `color` → Hintergrundfarbe der Karten ändern
-
-## Projekt starten
+## Installation
 
 ```bash
+# Repository klonen (oder ZIP entpacken und in den Ordner wechseln)
+git clone https://github.com/maximilianbese/Memory.git
+cd Memory
+
+# Abhängigkeiten installieren
 npm install
-npm run dev    # Entwicklungsserver
-npm run build  # Produktions-Build → dist/
+```
+
+## Verwendung
+
+| Befehl | Beschreibung |
+|--------|-------------|
+| `npm run dev` | Entwicklungsserver starten (`http://localhost:5173`) |
+| `npm run build` | Produktions-Build nach `dist/` erstellen |
+| `npm run preview` | Fertigen Build lokal vorschauen |
+
+## Projektstruktur
+
+```
+src/
+├── main.ts              # Einstiegspunkt
+├── styles/              # SCSS-Module
+└── ts/
+    ├── types.ts         # Typdefinitionen
+    ├── themes.ts        # Theme-Konfigurationen
+    ├── game-logic.ts    # Spielmechanik
+    └── renderer.ts      # DOM-Rendering
 ```
